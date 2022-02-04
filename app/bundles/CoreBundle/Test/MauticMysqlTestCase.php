@@ -25,6 +25,8 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
      */
     protected $useCleanupRollback = true;
 
+    private static bool $addColumnStatistics = false;
+
     /**
      * @param array<mixed> $data
      */
@@ -215,7 +217,8 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
     private function dumpToFile(string $sqlDumpFile): void
     {
         $connection = $this->connection;
-        $command    = "mysqldump --add-drop-table --column-statistics=0 --opt -h{$connection->getHost()} -P{$connection->getPort()} -u{$connection->getUsername()} {$connection->getDatabase()} > {$sqlDumpFile}";
+        $options = self::$addColumnStatistics ? ' --column-statistics=0' : '';
+        $command    = "mysqldump --add-drop-table{$options} --opt -h{$connection->getHost()} -P{$connection->getPort()} -u{$connection->getUsername()} {$connection->getDatabase()} > {$sqlDumpFile}";
 
         // 0 -> stdin, 1 -> stdout, 2 -> stderr
         // We only need stderr, in case we need to output errors when the result code != 0.
@@ -231,6 +234,13 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
         $result_code = proc_close($process);
 
         if (0 !== $result_code) {
+
+            if (false === self::$addColumnStatistics && false !== strpos($stderr, 'COLUMN_STATISTICS')) {
+                self::$addColumnStatistics = true;
+                $this->dumpToFile($sqlDumpFile);
+                return;
+            }
+
             unlink($sqlDumpFile);
             throw new Exception($command.' failed with status code '.$result_code.' and last line of "'.$stderr.'"');
         }
