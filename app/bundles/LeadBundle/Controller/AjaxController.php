@@ -665,10 +665,15 @@ class AjaxController extends CommonAjaxController
             )
         ) {
             $mailer = $this->factory->getMailer();
-            $mailer->setEmail($email, true, [], [], true);
+            // Get a copy of the mailer, so the real mailer instance will not be changed.
+            $sampleMailer = $mailer->getSampleMailer();
+            // Skip embedding, so the form will receive email with real images, which will be replaced by embedded
+            // images on the form submit.
+            $sampleMailer->setSkipEmbed(true);
+            $sampleMailer->setEmail($email, true, [], [], true);
 
-            $data['body']    = $mailer->getBody();
-            $data['subject'] = $mailer->getSubject();
+            $data['body']    = $sampleMailer->getBody();
+            $data['subject'] = $sampleMailer->getSubject();
         }
 
         return $this->sendJsonResponse($data);

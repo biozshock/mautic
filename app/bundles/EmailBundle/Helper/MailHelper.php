@@ -240,6 +240,11 @@ class MailHelper
      */
     private $embedImagesReplaces = [];
 
+    /**
+     * @var bool
+     */
+    private $skipEmbed = false;
+
     public function __construct(MauticFactory $factory, \Swift_Mailer $mailer, $from = null)
     {
         $this->factory   = $factory;
@@ -681,9 +686,7 @@ class MailHelper
             $this->from                = $this->systemFrom;
             $this->replyTo             = $this->systemReplyTo;
             $this->headers             = [];
-            [];
             $this->source              = [];
-            $this->assets              = [];
             $this->globalTokens        = [];
             $this->assets              = [];
             $this->attachedAssets      = [];
@@ -693,6 +696,7 @@ class MailHelper
             $this->subject             = '';
             $this->plainText           = '';
             $this->plainTextSet        = false;
+            $this->skipEmbed           = false;
             $this->body                = [
                 'content'     => '',
                 'contentType' => 'text/html',
@@ -969,7 +973,7 @@ class MailHelper
      */
     public function setBody($content, $contentType = 'text/html', $charset = null, $ignoreTrackingPixel = false)
     {
-        if ($this->factory->getParameter('mailer_convert_embed_images')) {
+        if (false === $this->skipEmbed && $this->factory->getParameter('mailer_convert_embed_images')) {
             $content = $this->convertEmbedImages($content);
         }
 
@@ -1547,6 +1551,14 @@ class MailHelper
     public function setTokens(array $tokens)
     {
         $this->globalTokens = $tokens;
+    }
+
+    /**
+     * @param bool $skipEmbed Skip embedding images into email and return unchanged source
+     */
+    public function setSkipEmbed(bool $skipEmbed): void
+    {
+        $this->skipEmbed = $skipEmbed;
     }
 
     /**
