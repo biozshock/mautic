@@ -2,6 +2,7 @@
 
 namespace Mautic\FormBundle\Model;
 
+use function assert;
 use Doctrine\ORM\ORMException;
 use Mautic\CampaignBundle\Entity\Campaign;
 use Mautic\CampaignBundle\Membership\MembershipManager;
@@ -36,6 +37,7 @@ use Mautic\LeadBundle\Deduplicate\ContactMerger;
 use Mautic\LeadBundle\Deduplicate\Exception\SameContactException;
 use Mautic\LeadBundle\Entity\Company;
 use Mautic\LeadBundle\Entity\CompanyChangeLog;
+use Mautic\LeadBundle\Entity\CompanyChangeLogRepository;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Helper\CustomFieldValueHelper;
 use Mautic\LeadBundle\Helper\IdentifyCompanyHelper;
@@ -180,7 +182,7 @@ class SubmissionModel extends CommonFormModel
     public function getRepository(): SubmissionRepository
     {
         $result = $this->em->getRepository(Submission::class);
-        \assert($result instanceof SubmissionRepository);
+        assert($result instanceof SubmissionRepository);
 
         return $result;
     }
@@ -1135,19 +1137,25 @@ class SubmissionModel extends CommonFormModel
         $companyFieldMatches = $getCompanyData($leadFieldMatches);
         if (!empty($companyFieldMatches)) {
             [$company, $leadAdded, $companyEntity] = IdentifyCompanyHelper::identifyLeadsCompany($companyFieldMatches, $lead, $this->companyModel);
+            $companyChangeLog                      = null;
             if ($leadAdded) {
-                $lead->addCompanyChangeLogEntry('form', 'Identify Company', 'Lead added to the company, '.$company['companyname'], $company['id']);
+                $companyChangeLog = $lead->addCompanyChangeLogEntry('form', 'Identify Company', 'Lead added to the company, '.$company['companyname'], $company['id']);
             } elseif ($companyEntity instanceof Company) {
                 $this->companyModel->setFieldValues($companyEntity, $companyFieldMatches);
                 $this->companyModel->saveEntity($companyEntity);
             }
 
-            if (!empty($company) and $companyEntity instanceof Company) {
+            if (!empty($company) && $companyEntity instanceof Company) {
                 // Save after the lead in for new leads created through the API and maybe other places
                 $this->companyModel->addLeadToCompany($companyEntity, $lead);
                 $this->leadModel->setPrimaryCompany($companyEntity->getId(), $lead->getId());
             }
-            $this->em->clear(CompanyChangeLog::class);
+
+            if (null !== $companyChangeLog) {
+                $companyChangeLogRepository = $this->em->getRepository(CompanyChangeLog::class);
+                assert($companyChangeLogRepository instanceof CompanyChangeLogRepository);
+                $companyChangeLogRepository->detachEntity($companyChangeLog);
+            }
         }
 
         return $lead;
