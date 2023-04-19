@@ -13,6 +13,7 @@ use Mautic\UserBundle\DataFixtures\ORM\LoadUserData;
 use Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Process\Process;
 
 abstract class MauticMysqlTestCase extends AbstractMauticTestCase
@@ -135,11 +136,11 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
         $connection = $this->connection;
 
         foreach ($tables as $table) {
-            $connection->query(sprintf('ALTER TABLE `%s%s` AUTO_INCREMENT=1', $prefix, $table));
+            $connection->executeQuery(sprintf('ALTER TABLE `%s%s` AUTO_INCREMENT=1', $prefix, $table));
         }
     }
 
-    protected function createAnotherClient(string $username = 'admin', string $password = 'mautic'): Client
+    protected function createAnotherClient(string $username = 'admin', string $password = 'mautic'): KernelBrowser
     {
         // turn off rollback cleanup as this client creates a separate DB connection
         $this->useCleanupRollback = false;
@@ -164,7 +165,7 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
         $prefix = MAUTIC_TABLE_PREFIX;
 
         foreach ($tables as $table) {
-            $this->connection->query("SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE `{$prefix}{$table}`; SET FOREIGN_KEY_CHECKS = 1;");
+            $this->connection->executeQuery("SET FOREIGN_KEY_CHECKS = 0; TRUNCATE TABLE `{$prefix}{$table}`; SET FOREIGN_KEY_CHECKS = 1;");
         }
     }
 
@@ -393,5 +394,21 @@ abstract class MauticMysqlTestCase extends AbstractMauticTestCase
         $cacheProvider = self::$container->get('mautic.cache.provider');
         \assert($cacheProvider instanceof CacheItemPoolInterface);
         $cacheProvider->clear();
+    }
+
+    /**
+     * Helper method to ensure booleans are strings in HTTP payloads.
+     *
+     * this ensures the payload is compatible with a change in Symfony 5.2
+     *
+     * @see https://github.com/symfony/browser-kit/commit/1d033e7dccc9978dd7a2bde778d06ebbbf196392
+     */
+    protected function generateTypeSafePayload(mixed $payload): mixed
+    {
+        array_walk_recursive($payload, function (&$value) {
+            $value = is_bool($value) ? ($value ? '1' : '0') : $value;
+        });
+
+        return $payload;
     }
 }
