@@ -10,7 +10,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class FocusShowType.
+ * @extends AbstractType<array<string, mixed>>
  */
 class FocusShowType extends AbstractType
 {

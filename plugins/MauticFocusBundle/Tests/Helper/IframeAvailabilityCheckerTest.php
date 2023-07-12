@@ -15,7 +15,7 @@ class IframeAvailabilityCheckerTest extends \PHPUnit\Framework\TestCase
     private $translator;
 
     /**
-     * @var IframeAvailabilityChecker|MockObject
+     * @var IframeAvailabilityChecker
      */
     private $helper;
 

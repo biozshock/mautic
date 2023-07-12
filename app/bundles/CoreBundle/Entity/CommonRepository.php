@@ -344,7 +344,7 @@ class CommonRepository extends ServiceEntityRepository
      *
      * @param array<string,mixed> $args
      *
-     * @return object[]|array<int,mixed>|\Doctrine\ORM\Internal\Hydration\IterableResult<object>|Paginator<object>|SimplePaginator<mixed>
+     * @return object[]|array<int,mixed>|iterable<object>|Paginator<object>|SimplePaginator<mixed>
      */
     public function getEntities(array $args = [])
     {
@@ -375,7 +375,8 @@ class CommonRepository extends ServiceEntityRepository
 
         if (!empty($args['iterator_mode'])) {
             // Hydrate one by one
-            return $query->iterate(null, $hydrationMode);
+            // todo prolly this is a BC!!! check it out.
+            return $query->toIterable([], $hydrationMode);
         } elseif (empty($args['ignore_paginator'])) {
             if (!empty($args['use_simple_paginator'])) {
                 // FAST paginator that can handle only simple queries using no joins or ManyToOne joins.

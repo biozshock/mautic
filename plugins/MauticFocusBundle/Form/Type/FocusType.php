@@ -20,7 +20,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use MauticPlugin\MauticFocusBundle\Entity\Focus;
 
+/**
+ * @extends AbstractType<Focus>
+ */
 class FocusType extends AbstractType
 {
     /**
@@ -240,7 +244,7 @@ class FocusType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'MauticPlugin\MauticFocusBundle\Entity\Focus',
+                'data_class' => Focus::class,
             ]
         );
         $resolver->setDefined(['update_select']);
