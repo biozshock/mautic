@@ -72,6 +72,9 @@ class Focus extends FormEntity
      */
     private $publishDown;
 
+    /**
+     * @var array<mixed>
+     */
     private array $properties = [];
 
     /**
