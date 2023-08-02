@@ -97,10 +97,8 @@ class UpdateLeadListsCommand extends ModeratedCommand
                 ]
             );
 
-            while (false !== ($leadList = $leadLists->next())) {
-                // Get first item; using reset as the key will be the ID and not 0
+            foreach ($leadLists as $leadList) {
                 /** @var LeadList $leadList */
-                $leadList                  = reset($leadList);
                 $startTimeForSingleSegment = time();
                 $this->rebuildSegment($leadList, $batch, $max, $output);
                 if ($enableTimeMeasurement) {

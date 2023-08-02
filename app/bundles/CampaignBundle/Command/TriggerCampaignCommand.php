@@ -236,9 +236,7 @@ class TriggerCampaignCommand extends ModeratedCommand
         /** @var \Doctrine\ORM\Internal\Hydration\IterableResult $campaigns */
         $campaigns = $this->campaignRepository->getEntities(['iterator_mode' => true]);
 
-        while (false !== ($next = $campaigns->next())) {
-            // Key is ID and not 0
-            $campaign = reset($next);
+        foreach ($campaigns as $campaign) {
             $this->triggerCampaign($campaign);
             if ($this->limiter->hasCampaignLimit()) {
                 $this->limiter->resetCampaignLimitRemaining();

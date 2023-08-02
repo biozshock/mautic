@@ -39,12 +39,6 @@ class MauticSocialMonitoringCommand extends Command
         // get the mid from the cli
         $batchSize = $input->getOption('batch-size');
 
-        if (!is_numeric($batchSize)) {
-            $output->writeln('batch-size is not number.');
-
-            return 1;
-        }
-
         // monitor record
         $monitorId   = $input->getOption('mid');
         $monitorList = $this->getMonitors($monitorId);
@@ -54,6 +48,12 @@ class MauticSocialMonitoringCommand extends Command
             $output->writeln('No published monitors found. Make sure the id you supplied is published');
 
             return \Symfony\Component\Console\Command\Command::SUCCESS;
+        }
+
+        if (!is_numeric($batchSize)) {
+            $output->writeln('batch-size is not number.');
+
+            return 1;
         }
 
         // max iterations

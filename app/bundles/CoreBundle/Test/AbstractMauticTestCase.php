@@ -226,7 +226,7 @@ abstract class AbstractMauticTestCase extends WebTestCase
      */
     protected function testSymfonyCommand(string $name, array $params = [], Command $command = null): CommandTester
     {
-        $kernel      = self::$container->get('kernel');
+        $kernel      = self::getContainer()->get('kernel');
         $application = new Application($kernel);
 
         if ($command) {

@@ -118,7 +118,6 @@ class OrganizerTest extends \PHPUnit\Framework\TestCase
         $leads     = ['00Qf100000YjYv4EAF', '00Qf100000YjYv9EAF', '00Qf100000YjYvEEAV', '00Qf100000YjYvJEAV', '00Qf100000YjYvOEAV'];
         $this->assertEquals($leads, $organizer->getLeadIds());
 
-        /** @var Lead[] $organizedLeads */
         $organizedLeads = $organizer->getLeads();
         foreach ($leads as $id) {
             $this->assertArrayHasKey($id, $organizedLeads);
