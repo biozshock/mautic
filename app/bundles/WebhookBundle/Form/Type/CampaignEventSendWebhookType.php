@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class CampaignEventRemoteUrlType.
+ * @extends AbstractType<array<mixed>>
  */
 class CampaignEventSendWebhookType extends AbstractType
 {

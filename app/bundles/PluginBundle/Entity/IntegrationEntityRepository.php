@@ -18,7 +18,7 @@ class IntegrationEntityRepository extends CommonRepository
      * @param bool                $push
      * @param int                 $start
      * @param int                 $limit
-     * @param null                $integrationEntityIds
+     * @param int|string|array<int|string>|null $integrationEntityIds
      *
      * @return array
      */

@@ -10,6 +10,7 @@ use Mautic\CoreBundle\Helper\PathsHelper;
 use Mautic\CoreBundle\Model\NotificationModel;
 use Mautic\LeadBundle\Entity\Company;
 use Mautic\LeadBundle\Entity\Lead;
+use Mautic\LeadBundle\Field\FieldsWithUniqueIdentifier;
 use Mautic\LeadBundle\Model\CompanyModel;
 use Mautic\LeadBundle\Model\DoNotContact;
 use Mautic\LeadBundle\Model\FieldModel;
@@ -63,6 +64,7 @@ class SugarcrmIntegration extends CrmAbstractIntegration
         NotificationModel $notificationModel,
         FieldModel $fieldModel,
         IntegrationEntityModel $integrationEntityModel,
+        FieldsWithUniqueIdentifier $fieldsWithUniqueIdentifier,
         DoNotContact $doNotContactModel,
         UserModel $userModel
     ) {
@@ -85,7 +87,8 @@ class SugarcrmIntegration extends CrmAbstractIntegration
             $notificationModel,
             $fieldModel,
             $integrationEntityModel,
-            $doNotContactModel
+            $doNotContactModel,
+            $fieldsWithUniqueIdentifier
         );
     }
 

@@ -121,18 +121,15 @@ class OrganizerTest extends \PHPUnit\Framework\TestCase
         $organizedLeads = $organizer->getLeads();
         foreach ($leads as $id) {
             $this->assertArrayHasKey($id, $organizedLeads);
-            $this->assertInstanceOf(Lead::class, $organizedLeads[$id]);
             $this->assertEquals($id, $organizedLeads[$id]->getId());
         }
 
         $contacts  = ['00Qf100000YjYvTEAV', '00Qf100000X1NR5EAN', '00Qf100000YjYvYEAV', '00Qf100000YjYvdEAF', '00Qf100000YjYviEAF'];
         $this->assertEquals($contacts, $organizer->getContactIds());
 
-        /** @var Contact[] $organizedLeads */
         $organizedContacts = $organizer->getContacts();
         foreach ($contacts as $id) {
             $this->assertArrayHasKey($id, $organizedContacts);
-            $this->assertInstanceOf(Contact::class, $organizedContacts[$id]);
             $this->assertEquals($id, $organizedContacts[$id]->getId());
         }
     }

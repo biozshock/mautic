@@ -30,7 +30,8 @@ class DynamicsIntegrationTest extends AbstractIntegrationTestCase
             $this->notificationModel,
             $this->fieldModel,
             $this->integrationEntityModel,
-            $this->doNotContact
+            $this->doNotContact,
+            $this->fieldsWithUniqueIdentifier
         );
     }
 

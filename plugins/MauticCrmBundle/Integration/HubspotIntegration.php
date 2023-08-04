@@ -12,6 +12,7 @@ use Mautic\CoreBundle\Model\NotificationModel;
 use Mautic\LeadBundle\DataObject\LeadManipulator;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Entity\StagesChangeLog;
+use Mautic\LeadBundle\Field\FieldsWithUniqueIdentifier;
 use Mautic\LeadBundle\Model\CompanyModel;
 use Mautic\LeadBundle\Model\DoNotContact;
 use Mautic\LeadBundle\Model\FieldModel;
@@ -59,6 +60,7 @@ class HubspotIntegration extends CrmAbstractIntegration
         FieldModel $fieldModel,
         IntegrationEntityModel $integrationEntityModel,
         DoNotContact $doNotContact,
+        FieldsWithUniqueIdentifier $fieldsWithUniqueIdentifier,
         UserHelper $userHelper
     ) {
         $this->userHelper = $userHelper;
@@ -79,7 +81,8 @@ class HubspotIntegration extends CrmAbstractIntegration
             $notificationModel,
             $fieldModel,
             $integrationEntityModel,
-            $doNotContact
+            $doNotContact,
+            $fieldsWithUniqueIdentifier
         );
     }
 

@@ -1009,6 +1009,7 @@ class SalesforceIntegrationTest extends AbstractIntegrationTestCase
                 $this->fieldModel,
                 $integrationEntityModelMock,
                 $this->doNotContact,
+                $this->fieldsWithUniqueIdentifier,
             ])
             ->onlyMethods($this->sfMockMethods)
             ->addMethods(['findLeadsToCreate'])

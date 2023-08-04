@@ -13,12 +13,12 @@ class Organizer
     private $records;
 
     /**
-     * @var array
+     * @var array<int, Lead>
      */
     private $leads = [];
 
     /**
-     * @var array
+     * @var array<int, Contact>
      */
     private $contacts = [];
 
@@ -49,7 +49,7 @@ class Organizer
     }
 
     /**
-     * @return array
+     * @return array<int, Contact>
      */
     public function getContacts()
     {
@@ -57,7 +57,7 @@ class Organizer
     }
 
     /**
-     * @return array
+     * @return array<int, int>
      */
     public function getContactIds()
     {
