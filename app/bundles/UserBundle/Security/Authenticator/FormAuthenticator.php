@@ -102,7 +102,7 @@ class FormAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
 
         try {
             /** @var User $user */
-            $user = $userProvider->loadUserByUsername($credentials['username']);
+            $user = $userProvider->loadUserByIdentifier($credentials['username']);
         } catch (UserNotFoundException $e) {
             /** @var string $user */
             $user = $credentials['username'];
@@ -152,7 +152,7 @@ class FormAuthenticator extends AbstractFormLoginAuthenticator implements Passwo
     {
         // Temp solution to remap a UserInterface object to a PasswordAuthenticatedUserInterface object
         $newUser = new User();
-        $newUser->setUsername($user->getUserName());
+        $newUser->setUsername($user->getUserIdentifier());
         $newUser->setPassword($user->getPassword());
 
         return $this->hasher->isPasswordValid($newUser, $credentials['password']);
