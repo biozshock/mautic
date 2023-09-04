@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class StageActionType.
+ * @extends AbstractType<array<mixed>>
  */
 class StageActionType extends AbstractType
 {

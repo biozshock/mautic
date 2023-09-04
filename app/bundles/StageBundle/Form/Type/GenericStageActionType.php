@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class GenericStageSettingsType.
+ * @extends AbstractType<array<mixed>>
  */
 class GenericStageActionType extends AbstractType
 {
