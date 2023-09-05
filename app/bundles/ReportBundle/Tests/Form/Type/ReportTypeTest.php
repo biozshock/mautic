@@ -86,7 +86,6 @@ final class ReportTypeTest extends \PHPUnit\Framework\TestCase
                     FormEvents::PRE_SET_DATA,
                     $this->callback(
                         function (callable $listener) use ($report) {
-                            /** @var FormInterface $form */
                             $form      = $this->createMock(FormInterface::class);
                             $formEvent = new FormEvent($form, $report);
                             $listener($formEvent);
