@@ -93,7 +93,7 @@ class UpdateLeadListsCommand extends ModeratedCommand
         } else {
             $leadLists = $this->listModel->getEntities(
                 [
-                    'iterator_mode' => true,
+                    'iterable_mode' => true,
                 ]
             );
 

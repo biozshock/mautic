@@ -234,7 +234,7 @@ class TriggerCampaignCommand extends ModeratedCommand
 
         // All published campaigns
         /** @var \Doctrine\ORM\Internal\Hydration\IterableResult $campaigns */
-        $campaigns = $this->campaignRepository->getEntities(['iterator_mode' => true]);
+        $campaigns = $this->campaignRepository->getEntities(['iterable_mode' => true]);
 
         foreach ($campaigns as $campaign) {
             $this->triggerCampaign($campaign);

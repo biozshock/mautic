@@ -103,7 +103,7 @@ class EmailRepository extends CommonRepository
             ->createQueryBuilder()
             ->select('e')
             ->from(\Mautic\EmailBundle\Entity\Email::class, 'e', 'e.id');
-        if (empty($args['iterator_mode'])) {
+        if (empty($args['iterator_mode']) && empty($args['iterable_mode'])) {
             $q->leftJoin('e.category', 'c');
 
             if (empty($args['ignoreListJoin']) && (!isset($args['email_type']) || 'list' == $args['email_type'])) {

@@ -148,7 +148,7 @@ class UpdateLeadCampaignsCommand extends ModeratedCommand
         } else {
             $campaigns = $this->campaignRepository->getEntities(
                 [
-                    'iterator_mode' => true,
+                    'iterable_mode' => true,
                 ]
             );
 
