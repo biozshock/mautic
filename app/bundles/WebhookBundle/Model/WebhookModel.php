@@ -525,7 +525,7 @@ class WebhookModel extends FormModel
     /**
      * Get the queues and order by date so we get events.
      *
-     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     * @return iterable<object>
      */
     public function getWebhookQueues(Webhook $webhook)
     {
@@ -534,7 +534,7 @@ class WebhookModel extends FormModel
 
         return $queueRepo->getEntities(
             [
-                'iterator_mode' => true,
+                'iterable_mode' => true,
                 'start'         => 0,
                 'limit'         => $this->webhookLimit,
                 'orderBy'       => $queueRepo->getTableAlias().'.dateAdded',
