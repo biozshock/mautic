@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class TrackingPixelSendType.
+ * @extends AbstractType<array<mixed>>
  */
 class TrackingPixelSendType extends AbstractType
 {

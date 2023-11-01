@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class IntegrationConfigType.
+ * @extends AbstractType<array<mixed>|mixed>
  */
 class IntegrationConfigType extends AbstractType
 {

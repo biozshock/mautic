@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class IntegrationCampaignsType.
+ * @extends AbstractType<array<mixed>>
  */
 class IntegrationCampaignsType extends AbstractType
 {

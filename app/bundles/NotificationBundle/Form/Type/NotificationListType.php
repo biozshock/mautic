@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class NotificationListType.
+ * @extends AbstractType<array<mixed>>
  */
 class NotificationListType extends AbstractType
 {

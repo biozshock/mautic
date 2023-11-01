@@ -22,13 +22,16 @@ use Mautic\PluginBundle\Model\IntegrationEntityModel;
 use Mautic\StageBundle\Entity\Stage;
 use MauticPlugin\MauticCrmBundle\Api\HubspotApi;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -47,11 +50,11 @@ class HubspotIntegration extends CrmAbstractIntegration
         EventDispatcherInterface $eventDispatcher,
         CacheStorageHelper $cacheStorageHelper,
         EntityManager $entityManager,
-        Session $session,
+        SessionInterface $session,
         RequestStack $requestStack,
-        Router $router,
+        RouterInterface $router,
         TranslatorInterface $translator,
-        Logger $logger,
+        LoggerInterface $logger,
         EncryptionHelper $encryptionHelper,
         LeadModel $leadModel,
         CompanyModel $companyModel,

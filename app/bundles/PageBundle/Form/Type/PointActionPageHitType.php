@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class PointActionPageHitType.
+ * @extends AbstractType<array<mixed>>
  */
 class PointActionPageHitType extends AbstractType
 {

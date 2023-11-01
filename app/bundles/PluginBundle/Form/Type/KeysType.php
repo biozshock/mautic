@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * Class SocialMediaKeysType.
+ * @extends AbstractType<array<mixed>>
  */
 class KeysType extends AbstractType
 {

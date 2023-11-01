@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class DetailsType.
+ * @extends AbstractType<Integration>
  */
 class DetailsType extends AbstractType
 {

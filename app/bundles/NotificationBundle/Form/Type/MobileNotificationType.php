@@ -18,7 +18,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Mautic\NotificationBundle\Entity\Notification;
 
+/**
+ * @extends AbstractType<Notification>
+ */
 class MobileNotificationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -171,7 +175,7 @@ class MobileNotificationType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Mautic\NotificationBundle\Entity\Notification',
+                'data_class' => Notification::class,
             ]
         );
 

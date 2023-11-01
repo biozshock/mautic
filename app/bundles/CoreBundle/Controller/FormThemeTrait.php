@@ -10,7 +10,7 @@ trait FormThemeTrait
     /**
      * Sets a specific theme for the form.
      *
-     * @param FormInterface<FormInterface> $form
+     * @param FormInterface<mixed> $form
      * @param string                       $template
      * @param mixed                        $themes
      *

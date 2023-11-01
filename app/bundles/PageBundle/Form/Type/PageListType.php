@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PageListType.
+ * @extends AbstractType<array<mixed>>
  */
 class PageListType extends AbstractType
 {

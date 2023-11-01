@@ -21,13 +21,16 @@ use Mautic\PluginBundle\Exception\ApiErrorException;
 use Mautic\PluginBundle\Model\IntegrationEntityModel;
 use Mautic\UserBundle\Model\UserModel;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -52,11 +55,11 @@ class SugarcrmIntegration extends CrmAbstractIntegration
         EventDispatcherInterface $eventDispatcher,
         CacheStorageHelper $cacheStorageHelper,
         EntityManager $entityManager,
-        Session $session,
+        SessionInterface $session,
         RequestStack $requestStack,
-        Router $router,
+        RouterInterface $router,
         TranslatorInterface $translator,
-        Logger $logger,
+        LoggerInterface $logger,
         EncryptionHelper $encryptionHelper,
         LeadModel $leadModel,
         CompanyModel $companyModel,
@@ -786,7 +789,7 @@ class SugarcrmIntegration extends CrmAbstractIntegration
             $MODULE_FIELD_NAME = '_module';
         }
 
-        if (isset($data[$RECORDS_LIST_NAME]) and 'Activity' !== $object) {
+        if (isset($RECORDS_LIST_NAME, $data[$RECORDS_LIST_NAME]) && 'Activity' !== $object) {
             // Get assigned user ids
             $assignedUserIds            = [];
             $onwerEmailByAssignedUserId = [];

@@ -247,17 +247,6 @@ class PublicControllerTest extends MauticMysqlTestCase
                 )
             );
 
-        $container = $this->createMock(Container::class);
-        $container->method('has')
-            ->will($this->returnValue(true));
-        $container->expects(self::once())
-            ->method('get')
-            ->willReturnMap(
-                [
-                    ['router', Container::EXCEPTION_ON_INVALID_REFERENCE, $router],
-                ]
-            );
-
         $this->request->attributes->set('ignore_mismatch', true);
 
         $formFactory          = $this->createMock(FormFactoryInterface::class);
@@ -284,7 +273,6 @@ class PublicControllerTest extends MauticMysqlTestCase
             $requestStack,
             $mauticSecurity
         );
-        $controller->setContainer($container);
 
         $response = $controller->indexAction(
             $this->request,
@@ -293,6 +281,7 @@ class PublicControllerTest extends MauticMysqlTestCase
             $analyticsHelper,
             $assetHelper,
             $this->createMock(Tracking404Model::class),
+            $router,
             '/page/a',
         );
 
@@ -394,7 +383,7 @@ class PublicControllerTest extends MauticMysqlTestCase
             $this->logger,
             $redirectId
         );
-        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('https://someurl.test/?ct=someClickTroughValue', $response->getTargetUrl());
     }
 
     /**
@@ -497,7 +486,6 @@ class PublicControllerTest extends MauticMysqlTestCase
             $this->logger,
             $redirectId
         );
-        self::assertInstanceOf(RedirectResponse::class, $response);
         self::assertSame($targetUrl, $response->getTargetUrl());
         self::assertSame(Response::HTTP_FOUND, $response->getStatusCode());
     }

@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class AbTestPropertiesType.
+ * @extends AbstractType<array<mixed>>
  */
 class AbTestPropertiesType extends AbstractType
 {
