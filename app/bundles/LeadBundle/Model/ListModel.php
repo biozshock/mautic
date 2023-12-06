@@ -38,6 +38,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -157,6 +158,8 @@ class ListModel extends FormModel
     /**
      * @param string|null $action
      * @param array       $options
+     *
+     * @return FormInterface<LeadList>
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
