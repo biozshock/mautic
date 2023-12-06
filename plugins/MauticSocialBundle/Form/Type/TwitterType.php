@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class TwitterType.
+ * @extends AbstractType<array<mixed>>
  */
 class TwitterType extends AbstractType
 {

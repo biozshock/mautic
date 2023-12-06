@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class CampaignEventPageHitType.
+ * @extends AbstractType<array<mixed>>
  */
 class CampaignEventPageHitType extends AbstractType
 {

@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class FormFieldCaptchaType.
+ * @extends AbstractType<mixed>
  */
 class FormFieldCaptchaType extends AbstractType
 {

@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class CampaignEventAddRemoveLeadType.
+ * @extends AbstractType<mixed>
  */
 class CampaignEventAddRemoveLeadType extends AbstractType
 {

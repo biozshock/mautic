@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class FormFieldPageBreakType.
+ * @extends AbstractType<mixed>
  */
 class FormFieldPageBreakType extends AbstractType
 {

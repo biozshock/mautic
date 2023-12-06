@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class EmailSendType.
+ * @extends AbstractType<array<mixed>>
  */
 class StageActionChangeType extends AbstractType
 {

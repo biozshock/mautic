@@ -286,7 +286,7 @@ class FormApiController extends CommonApiController
     /**
      * Creates the form instance.
      *
-     * @return FormInterface
+     * @return FormInterface<mixed>
      */
     protected function createActionEntityForm(Action $entity, array $action)
     {
@@ -313,7 +313,7 @@ class FormApiController extends CommonApiController
     /**
      * Creates the form instance.
      *
-     * @return FormInterface
+     * @return FormInterface<mixed>
      */
     protected function createFieldEntityForm($entity)
     {

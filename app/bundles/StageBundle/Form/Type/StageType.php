@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<Stage>
+ */
 class StageType extends AbstractType
 {
     /**
@@ -110,7 +113,7 @@ class StageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Mautic\StageBundle\Entity\Stage',
+            'data_class' => Stage::class,
         ]);
 
         $resolver->setDefined(['stageActions', 'actionType']);

@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class CampaignEventLeadChangeType.
+ * @extends AbstractType<mixed>
  */
 class CampaignEventLeadChangeType extends AbstractType
 {

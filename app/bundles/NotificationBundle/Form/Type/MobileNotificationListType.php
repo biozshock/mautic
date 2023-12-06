@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class MobileNotificationListType.
+ * @extends AbstractType<array<mixed>>
  */
 class MobileNotificationListType extends AbstractType
 {

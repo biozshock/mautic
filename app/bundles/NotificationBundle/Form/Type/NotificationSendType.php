@@ -10,7 +10,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class NotificationSendType.
+ * @extends AbstractType<array<mixed>>
  */
 class NotificationSendType extends AbstractType
 {

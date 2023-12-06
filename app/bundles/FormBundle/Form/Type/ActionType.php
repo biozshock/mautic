@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ActionType.
+ * @extends AbstractType<mixed>
  */
 class ActionType extends AbstractType
 {

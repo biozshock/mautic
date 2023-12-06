@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * Class PointActionUrlHitType.
+ * @extends AbstractType<array<mixed>>
  */
 class PointActionUrlHitType extends AbstractType
 {

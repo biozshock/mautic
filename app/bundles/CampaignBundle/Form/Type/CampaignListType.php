@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class CampaignListType.
+ * @extends AbstractType<mixed>
  */
 class CampaignListType extends AbstractType
 {

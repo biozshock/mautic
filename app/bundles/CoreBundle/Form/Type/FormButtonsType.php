@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class FormButtonsType.
+ * @extends AbstractType<mixed>
  */
 class FormButtonsType extends AbstractType
 {

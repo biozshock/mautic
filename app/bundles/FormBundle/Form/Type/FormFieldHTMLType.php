@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class FormFieldHTMLType.
+ * @extends AbstractType<mixed>
  */
 class FormFieldHTMLType extends AbstractType
 {

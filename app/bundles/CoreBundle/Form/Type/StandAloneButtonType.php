@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class StandAloneButtonType.
+ * @extends AbstractType<mixed>
  */
 class StandAloneButtonType extends AbstractType
 {

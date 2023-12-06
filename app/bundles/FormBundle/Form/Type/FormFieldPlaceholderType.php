@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class FormFieldPlaceholderType.
+ * @extends AbstractType<mixed>
  */
 class FormFieldPlaceholderType extends AbstractType
 {

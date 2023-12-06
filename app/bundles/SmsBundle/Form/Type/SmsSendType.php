@@ -10,7 +10,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class SmsSendType.
+ * @extends AbstractType<array<mixed>>
  */
 class SmsSendType extends AbstractType
 {

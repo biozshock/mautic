@@ -5,10 +5,12 @@ namespace Mautic\LeadBundle\Form\Type;
 use Mautic\LeadBundle\Model\ListModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 class LeadListType extends AbstractType
 {
     /**
@@ -46,7 +48,7 @@ class LeadListType extends AbstractType
     }
 
     /**
-     * @return string|FormTypeInterface|null
+     * @return string
      */
     public function getParent()
     {

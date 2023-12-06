@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class FacebookLoginType.
+ * @extends AbstractType<array<mixed>>
  */
 class SocialLoginType extends AbstractType
 {

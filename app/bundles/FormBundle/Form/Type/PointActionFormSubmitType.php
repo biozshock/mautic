@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class PointActionFormSubmitType.
+ * @extends AbstractType<mixed>
  */
 class PointActionFormSubmitType extends AbstractType
 {

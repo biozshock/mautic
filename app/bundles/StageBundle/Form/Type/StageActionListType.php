@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class StageActionType.
+ * @extends AbstractType<array<mixed>>
  */
 class StageActionListType extends AbstractType
 {
@@ -38,7 +38,7 @@ class StageActionListType extends AbstractType
     }
 
     /**
-     * @return string|\Symfony\Component\Form\FormTypeInterface|null
+     * @return string
      */
     public function getParent()
     {

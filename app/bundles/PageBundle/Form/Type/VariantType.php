@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class VariantType.
+ * @extends AbstractType<mixed>
  */
 class VariantType extends AbstractType
 {

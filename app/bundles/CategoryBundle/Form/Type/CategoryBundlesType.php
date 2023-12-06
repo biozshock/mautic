@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class CategoryBundlesType.
+ * @extends AbstractType<mixed>
  */
 class CategoryBundlesType extends AbstractType
 {

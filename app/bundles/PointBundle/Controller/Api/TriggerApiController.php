@@ -17,6 +17,7 @@ use Mautic\PointBundle\Model\TriggerModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -123,7 +124,7 @@ class TriggerApiController extends CommonApiController
     /**
      * Creates the form instance.
      *
-     * @return Form
+     * @return FormInterface<mixed>
      */
     protected function createTriggerEventEntityForm($entity)
     {

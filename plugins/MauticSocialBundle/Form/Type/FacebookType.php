@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class FacebookType.
+ * @extends AbstractType<array<mixed>>
  */
 class FacebookType extends AbstractType
 {

@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class CampaignEventJumpToEventType.
+ * @extends AbstractType<mixed>
  */
 class CampaignEventJumpToEventType extends AbstractType
 {
