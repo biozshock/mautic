@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ButtonGroupType.
+ * @extends AbstractType<mixed>
  */
 class ButtonGroupType extends AbstractType
 {

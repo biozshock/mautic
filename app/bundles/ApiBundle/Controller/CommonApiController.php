@@ -19,6 +19,7 @@ use Mautic\CoreBundle\Translation\Translator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -329,8 +330,10 @@ class CommonApiController extends FetchCommonApiController
 
     /**
      * Creates the form instance.
+     *
+     * @return FormInterface<mixed>
      */
-    protected function createEntityForm($entity): Form
+    protected function createEntityForm($entity): FormInterface
     {
         return $this->model->createForm(
             $entity,

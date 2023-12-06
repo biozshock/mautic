@@ -234,7 +234,7 @@ final class DeviceTrackingServiceTest extends \PHPUnit\Framework\TestCase
 
         $deviceTrackingService = $this->getDeviceTrackingService();
 
-        $this->assertInstanceOf(LeadDevice::class, $deviceTrackingService->trackCurrentDevice($leadDeviceMock, false));
+        $deviceTrackingService->trackCurrentDevice($leadDeviceMock, false);
     }
 
     /**
@@ -291,7 +291,7 @@ final class DeviceTrackingServiceTest extends \PHPUnit\Framework\TestCase
             ->withConsecutive(['mautic_device_id', $uniqueTrackingIdentifier, 31536000]);
 
         $deviceTrackingService = $this->getDeviceTrackingService();
-        $this->assertInstanceOf(LeadDevice::class, $deviceTrackingService->trackCurrentDevice($leadDeviceMock, true));
+        $deviceTrackingService->trackCurrentDevice($leadDeviceMock, true);
     }
 
     /**
@@ -350,7 +350,7 @@ final class DeviceTrackingServiceTest extends \PHPUnit\Framework\TestCase
             ->method('flush');
 
         $deviceTrackingService = $this->getDeviceTrackingService();
-        $this->assertInstanceOf(LeadDevice::class, $deviceTrackingService->trackCurrentDevice($leadDeviceMock, false));
+        $deviceTrackingService->trackCurrentDevice($leadDeviceMock, false);
     }
 
     /**

@@ -3,6 +3,14 @@
 namespace Mautic\CoreBundle\Doctrine\QueryFormatter;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\DB2Platform;
+use Doctrine\DBAL\Platforms\OraclePlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use Mautic\CoreBundle\Doctrine\DatabasePlatform;
 
 /**
  * Help generate SQL statements to format column data.
@@ -20,7 +28,7 @@ abstract class AbstractFormatter
      */
     public static function createFormatter(Connection $db)
     {
-        $name  = $db->getDatabasePlatform()->getName();
+        $name  = DatabasePlatform::getDatabasePlatform($db->getDatabasePlatform());
         $class = '\Mautic\CoreBundle\Doctrine\QueryFormatter\\'.ucfirst($name).'Formatter';
 
         return new $class($db);
@@ -30,7 +38,7 @@ abstract class AbstractFormatter
     {
         $this->db       = $db;
         $this->platform = $this->db->getDatabasePlatform();
-        $this->name     = $this->platform->getName();
+        $this->name     = DatabasePlatform::getDatabasePlatform($this->platform);
     }
 
     /**

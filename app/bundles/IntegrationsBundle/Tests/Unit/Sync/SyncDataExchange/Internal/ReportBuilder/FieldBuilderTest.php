@@ -33,10 +33,22 @@ class FieldBuilderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->router      = $this->createMock(Router::class);
+        $this->router = $this->createMock(Router::class);
+
+        $fieldHelperReflection = new \ReflectionClass(FieldHelper::class);
+
+        $methods = array_map(static function(\ReflectionMethod $m): string {
+            return $m->name;
+        }, $fieldHelperReflection->getMethods());
+
+        $methodsToMock = array_diff(
+            $methods,
+            ['getNormalizedFieldType', 'getFieldObjectName']
+        );
+
         $this->fieldHelper = $this->getMockBuilder(FieldHelper::class)
             ->disableOriginalConstructor()
-            ->setMethodsExcept(['getNormalizedFieldType', 'getFieldObjectName'])
+            ->onlyMethods($methodsToMock)
             ->getMock();
         $this->contactObjectHelper = $this->createMock(ContactObjectHelper::class);
     }

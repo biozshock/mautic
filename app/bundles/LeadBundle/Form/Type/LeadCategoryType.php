@@ -8,6 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 class LeadCategoryType extends AbstractType
 {
     private $categoryModel;
@@ -36,7 +39,7 @@ class LeadCategoryType extends AbstractType
     }
 
     /**
-     * @return string|\Symfony\Component\Form\FormTypeInterface|null
+     * @return string
      */
     public function getParent()
     {

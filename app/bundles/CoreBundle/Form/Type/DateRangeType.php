@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * Class FilterType.
+ * @extends AbstractType<mixed>
  */
 class DateRangeType extends AbstractType
 {

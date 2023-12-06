@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ThemeListType.
+ * @extends AbstractType<mixed>
  */
 class ThemeListType extends AbstractType
 {

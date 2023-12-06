@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class FormFieldFileType.
+ * @extends AbstractType<mixed>
  */
 class FormFieldFileType extends AbstractType
 {

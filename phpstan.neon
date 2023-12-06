@@ -30,6 +30,9 @@ parameters:
 		- '/Variable \$\w+ might not be defined\./'
 		- '/to be removed in 3\.0/'
 		- '/To be removed in Mautic 6\.0/'
+		- '/deprecated class Mautic\\CoreBundle\\Helper\\CacheStorageHelper/'
+		- '/Call to deprecated method addLead\(\) of class Mautic\\CoreBundle\\Doctrine\\Mapping\\ClassMetadataBuilder/'
+		- '/Fetching deprecated class constant ARRAY of class Doctrine\\DBAL\\Types\\Types/'
 	scanFiles:
 		# This is here because a few functions in the global namespace are defined in this file
 		- vendor/twig/twig/src/Extension/EscaperExtension.php

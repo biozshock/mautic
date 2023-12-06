@@ -7,14 +7,20 @@ use Doctrine\Persistence\ManagerRegistry;
 use Mautic\CoreBundle\Entity\IpAddress;
 use Mautic\CoreBundle\Exception\FileNotFoundException;
 use Mautic\CoreBundle\Helper\DateTimeHelper;
+use Mautic\CoreBundle\Helper\ThemeHelper;
 use Mautic\CoreBundle\Helper\UserHelper;
 use Mautic\CoreBundle\Model\AbstractCommonModel;
 use Mautic\CoreBundle\Security\Permissions\CorePermissions;
 use Mautic\CoreBundle\Translation\Translator;
+use Mautic\CoreBundle\Twig\Helper\SlotsHelper;
 use Mautic\EmailBundle\Helper\MailHelper;
+use Mautic\EmailBundle\MonitoredEmail\Mailbox;
+use Mautic\PluginBundle\Helper\IntegrationHelper;
 use Mautic\UserBundle\Entity\User;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -43,6 +49,16 @@ class MauticFactory
 
     private Translator $translator;
 
+    private Mailbox $mailbox;
+
+    private ThemeHelper $themeHelper;
+
+    private IntegrationHelper $integrationHelper;
+
+    private SlotsHelper $slotsHelper;
+
+    private LoggerInterface $logger;
+
     /**
      * @param ModelFactory<object> $modelFactory
      */
@@ -54,7 +70,12 @@ class MauticFactory
         UserHelper $userHelper,
         RequestStack $requestStack,
         ManagerRegistry $doctrine,
-        Translator $translator
+        Translator $translator,
+        Mailbox $mailbox,
+        ThemeHelper $themeHelper,
+        IntegrationHelper $integrationHelper,
+        SlotsHelper $slotsHelper,
+        LoggerInterface $logger
     ) {
         $this->container            = $container;
         $this->modelFactory         = $modelFactory;
@@ -64,6 +85,11 @@ class MauticFactory
         $this->requestStack         = $requestStack;
         $this->doctrine             = $doctrine;
         $this->translator           = $translator;
+        $this->mailbox              = $mailbox;
+        $this->themeHelper          = $themeHelper;
+        $this->integrationHelper    = $integrationHelper;
+        $this->slotsHelper          = $slotsHelper;
+        $this->logger               = $logger;
     }
 
     /**
@@ -161,12 +187,7 @@ class MauticFactory
         return $this->container->get('twig');
     }
 
-    /**
-     * Retrieves event dispatcher.
-     *
-     * @return \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
-     */
-    public function getDispatcher()
+    public function getDispatcher(): EventDispatcherInterface
     {
         return $this->container->get('event_dispatcher');
     }
@@ -354,15 +375,17 @@ class MauticFactory
      *
      * @param bool|false $system
      *
-     * @return \Monolog\Logger
+     * @return LoggerInterface
      */
     public function getLogger($system = false)
     {
         if ($system) {
-            return $this->container->get('logger');
-        } else {
-            return $this->container->get('monolog.logger.mautic');
+            return $this->logger;
         }
+
+        $logger = $this->container->get('monolog.logger.mautic');
+
+        return $logger;
     }
 
     /**
@@ -373,17 +396,16 @@ class MauticFactory
     public function getHelper($helper)
     {
         switch ($helper) {
-            case 'template.assets':
-                return $this->container->get('twig.helper.assets');
+            case 'mailbox':
+                return $this->mailbox;
+            case 'theme':
+                return $this->themeHelper;
+            case 'integration':
+                return $this->integrationHelper;
             case 'template.slots':
-                return $this->container->get('twig.helper.slots');
-            case 'template.form':
-                return $this->container->get('twig.helper.form');
-            case 'template.translator':
-                return $this->container->get('twig.helper.translator');
-            case 'template.router':
-                return $this->container->get('twig.helper.router');
+                return $this->slotsHelper;
             default:
+                @trigger_error('MauticFactory::getHelper with "'.$helper.'" is deprecated.', E_USER_DEPRECATED);
                 return $this->container->get('mautic.helper.'.$helper);
         }
     }

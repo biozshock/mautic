@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class FormFieldTextType.
+ * @extends AbstractType<mixed>
  */
 class FormFieldTelType extends AbstractType
 {

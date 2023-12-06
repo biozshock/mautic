@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class SubmitActionEmailType.
+ * @extends AbstractType<mixed>
  */
 class SubmitActionEmailType extends AbstractType
 {

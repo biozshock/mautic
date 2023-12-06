@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class MessageSendType.
+ * @extends AbstractType<mixed>
  */
 class MessageSendType extends AbstractType
 {

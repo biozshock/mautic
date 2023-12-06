@@ -24,7 +24,7 @@ class ContactSegmentFilterTest extends TestCase
     private $contactSegmentFilterCrate;
 
     /**
-     * @var BaseDecorator|MockObject
+     * @var FilterDecoratorInterface&MockObject
      */
     private $filterDecorator;
 
@@ -182,7 +182,6 @@ class ContactSegmentFilterTest extends TestCase
 
         $parts = $filter->getIntegrationCampaignParts();
 
-        self::assertInstanceOf(IntegrationCampaignParts::class, $parts);
         self::assertEquals($value, $parts->getCampaignId());
     }
 
@@ -208,7 +207,7 @@ class ContactSegmentFilterTest extends TestCase
         self::assertNull($filter->getRelationJoinTable());
 
         $this->filterDecorator = $this->getMockBuilder(FilterDecoratorInterface::class)
-            ->setMethods(['getRelationJoinTable'])
+            ->addMethods(['getRelationJoinTable'])
             ->getMockForAbstractClass();
         $this->filterDecorator->expects(self::once())
             ->method('getRelationJoinTable')
@@ -322,7 +321,7 @@ class ContactSegmentFilterTest extends TestCase
         self::assertNull($filter->getRelationJoinTableField());
 
         $this->filterDecorator = $this->getMockBuilder(FilterDecoratorInterface::class)
-            ->setMethods(['getRelationJoinTableField'])
+            ->addMethods(['getRelationJoinTableField'])
             ->getMockForAbstractClass();
         $this->filterDecorator->expects(self::once())
             ->method('getRelationJoinTableField')

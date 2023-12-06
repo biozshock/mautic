@@ -21,8 +21,6 @@ class SchedulerBuilderTest extends \PHPUnit\Framework\TestCase
 
         $events = $schedulerBuilder->getNextEvent($schedulerEntity);
 
-        $this->assertInstanceOf(RecurrenceCollection::class, $events);
-
         $event = $events[0];
         $this->assertInstanceOf(Recurrence::class, $event);
 
@@ -38,8 +36,6 @@ class SchedulerBuilderTest extends \PHPUnit\Framework\TestCase
         $schedulerEntity = new SchedulerEntity(true, SchedulerEnum::UNIT_DAILY, null, null);
 
         $events = $schedulerBuilder->getNextEvents($schedulerEntity, 3);
-
-        $this->assertInstanceOf(RecurrenceCollection::class, $events);
 
         $event = $events[0];
         $this->assertInstanceOf(Recurrence::class, $event);

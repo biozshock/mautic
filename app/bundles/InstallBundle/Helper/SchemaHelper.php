@@ -5,6 +5,8 @@ namespace Mautic\InstallBundle\Helper;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\TableDiff;
@@ -35,6 +37,11 @@ class SchemaHelper
      * @var array
      */
     protected $dbParams = [];
+
+    /**
+     * @var AbstractSchemaManager<AbstractPlatform>|null
+     */
+    private ?AbstractSchemaManager $schemaManager = null;
 
     /**
      * @throws \Doctrine\DBAL\Exception
@@ -102,7 +109,7 @@ class SchemaHelper
 
             try {
                 // database does not exist so try to create it
-                $this->db->getSchemaManager()->createDatabase($dbName);
+                $this->getSchemaManager()->createDatabase($dbName);
 
                 // close the connection and reconnect with the new database name
                 $this->db->close();
@@ -128,7 +135,7 @@ class SchemaHelper
      */
     public function installSchema()
     {
-        $sm = $this->db->getSchemaManager();
+        $sm = $this->getSchemaManager();
 
         try {
             // check to see if the table already exist
@@ -139,7 +146,7 @@ class SchemaHelper
             throw $e;
         }
 
-        $this->platform = $sm->getDatabasePlatform();
+        $this->platform = $this->db->getDatabasePlatform();
         $backupPrefix   = (!empty($this->dbParams['backup_prefix'])) ? $this->dbParams['backup_prefix'] : 'bak_';
 
         $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
@@ -158,7 +165,8 @@ class SchemaHelper
             $mauticTables[$tableName] = $this->generateBackupName($this->dbParams['table_prefix'], $backupPrefix, $tableName);
         }
 
-        $sql = 'sqlite' === $this->em->getConnection()->getDatabasePlatform()->getName() ? [] : ['SET foreign_key_checks = 0;'];
+        $isSqlite = $this->em->getConnection()->getDatabasePlatform() instanceof SqlitePlatform;
+        $sql = $isSqlite ? [] : ['SET foreign_key_checks = 0;'];
         if ($this->dbParams['backup_tables']) {
             $sql = array_merge($sql, $this->backupExistingSchema($tables, $mauticTables, $backupPrefix));
         } else {
@@ -219,7 +227,7 @@ class SchemaHelper
     protected function backupExistingSchema($tables, $mauticTables, $backupPrefix)
     {
         $sql = [];
-        $sm  = $this->db->getSchemaManager();
+        $sm  = $this->getSchemaManager();
 
         // backup existing tables
         $backupRestraints = $backupSequences = $backupIndexes = $backupTables = $dropSequences = $dropTables = [];
@@ -279,10 +287,8 @@ class SchemaHelper
             }
 
             // rename table
-            $tableDiff          = new TableDiff($t);
-            $tableDiff->newName = $backup;
-            $queries            = $this->platform->getAlterTableSQL($tableDiff);
-            $sql                = array_merge($sql, $queries);
+            $queries = $this->platform->getRenameTableSQL($t, $backup);
+            $sql     = array_merge($sql, $queries);
 
             // create new index
             if (!empty($newIndexes)) {
@@ -339,5 +345,17 @@ class SchemaHelper
         } else {
             return str_replace($prefix, $backupPrefix, $name);
         }
+    }
+
+    /**
+     * @return AbstractSchemaManager<AbstractPlatform>
+     */
+    private function getSchemaManager(): AbstractSchemaManager
+    {
+        if (null !== $this->schemaManager) {
+            return $this->schemaManager;
+        }
+
+        return $this->schemaManager = $this->db->createSchemaManager();
     }
 }

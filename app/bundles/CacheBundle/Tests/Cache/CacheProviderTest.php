@@ -81,8 +81,7 @@ class CacheProviderTest extends TestCase
             ->with('foo.bar')
             ->willReturn($this->adapter);
 
-        $simpleCache = $this->cacheProvider->getSimpleCache();
-        $this->assertInstanceOf(Psr16Cache::class, $simpleCache);
+        $this->cacheProvider->getSimpleCache();
     }
 
     public function testExceptionThrownIfAdaptorNotFoundInContainer(): void

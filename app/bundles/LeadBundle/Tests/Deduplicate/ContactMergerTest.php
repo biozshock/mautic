@@ -23,7 +23,7 @@ class ContactMergerTest extends \PHPUnit\Framework\TestCase
     private $leadModel;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|MergeRecordRepository
+     * @var \PHPUnit\Framework\MockObject\MockObject|LeadRepository
      */
     private $leadRepo;
 
@@ -520,13 +520,13 @@ class ContactMergerTest extends \PHPUnit\Framework\TestCase
 
         // Should not have been merged due to winner already having one
         $this->getMerger()->mergeOwners($winner, $loser);
-        $this->assertEquals($winnerOwner->getUsername(), $winner->getOwner()->getUsername());
+        $this->assertEquals($winnerOwner->getUserIdentifier(), $winner->getOwner()->getUserIdentifier());
 
         $winner->setOwner(null);
         $this->getMerger()->mergeOwners($winner, $loser);
 
         // Should be set to loser owner since winner owner was null
-        $this->assertEquals($loserOwner->getUsername(), $winner->getOwner()->getUsername());
+        $this->assertEquals($loserOwner->getUserIdentifier(), $winner->getOwner()->getUserIdentifier());
     }
 
     public function testMergePoints()

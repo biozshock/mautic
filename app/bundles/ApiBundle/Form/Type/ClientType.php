@@ -20,7 +20,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Mautic\ApiBundle\Entity\oAuth2\Client;
 
+/**
+ * @extends AbstractType<Client>
+ */
 class ClientType extends AbstractType
 {
     /**
@@ -196,7 +200,7 @@ class ClientType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $dataClass = 'Mautic\ApiBundle\Entity\oAuth2\Client';
+        $dataClass = Client::class;
         $resolver->setDefaults(
             [
                 'data_class' => $dataClass,

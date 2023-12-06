@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class TelType.
+ * @extends AbstractType<mixed>
  */
 class TelType extends AbstractType
 {

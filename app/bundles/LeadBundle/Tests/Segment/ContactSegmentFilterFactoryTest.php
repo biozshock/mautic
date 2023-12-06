@@ -70,7 +70,6 @@ class ContactSegmentFilterFactoryTest extends \PHPUnit\Framework\TestCase
 
         $contactSegmentFilters = $contactSegmentFilterFactory->getSegmentFilters($leadList);
 
-        $this->assertInstanceOf(ContactSegmentFilters::class, $contactSegmentFilters);
         $this->assertCount(3, $contactSegmentFilters);
     }
 }

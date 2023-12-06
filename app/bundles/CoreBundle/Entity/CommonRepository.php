@@ -1478,7 +1478,7 @@ class CommonRepository extends ServiceEntityRepository
                 $queryExpression->add(
                     $q->expr()->in($this->getTableAlias().'.id', ':'.$param)
                 );
-                $q->setParameter($param, $ids, Connection::PARAM_INT_ARRAY);
+                $q->setParameter($param, $ids, ArrayParameterType::INTEGER);
             }
         } elseif (!empty($args['ownedBy'])) {
             $queryExpression->add(
@@ -1635,7 +1635,7 @@ class CommonRepository extends ServiceEntityRepository
 
                             if (is_array($arg)) {
                                 $whereClause = $query->expr()->{$clause['expr']}($column, ':'.$param);
-                                $query->setParameter($param, $arg, Connection::PARAM_STR_ARRAY);
+                                $query->setParameter($param, $arg, ArrayParameterType::STRING);
                             } else {
                                 $expression  = 'in' === $clause['expr'] ? 'eq' : 'neq';
                                 $whereClause = $query->expr()->{$expression}($column, ':'.$param);

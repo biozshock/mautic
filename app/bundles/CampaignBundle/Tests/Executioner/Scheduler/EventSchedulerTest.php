@@ -26,7 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class EventSchedulerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface
      */
     private $logger;
 

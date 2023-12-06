@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Mautic\LeadBundle\Tests\Model;
 
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use Mautic\LeadBundle\Entity\Import;
 use Mautic\LeadBundle\Entity\ImportRepository;
 use Mautic\LeadBundle\Entity\LeadEventLog;
@@ -32,7 +32,6 @@ class ImportModelTest extends StandardImportTestHelper
             ->setOriginalFile($fileName);
         $log = $model->initEventLog($entity, $line);
 
-        Assert::assertInstanceOf(LeadEventLog::class, $log);
         Assert::assertSame($userId, $log->getUserId());
         Assert::assertSame($userName, $log->getUserName());
         Assert::assertSame('lead', $log->getBundle());

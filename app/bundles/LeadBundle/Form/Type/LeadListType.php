@@ -9,6 +9,9 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 class LeadListType extends AbstractType
 {
     /**
@@ -46,7 +49,7 @@ class LeadListType extends AbstractType
     }
 
     /**
-     * @return string|FormTypeInterface|null
+     * @return string
      */
     public function getParent()
     {

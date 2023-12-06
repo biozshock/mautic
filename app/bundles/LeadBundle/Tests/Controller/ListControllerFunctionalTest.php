@@ -36,13 +36,11 @@ class ListControllerFunctionalTest extends MauticMysqlTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->listModel = self::$container->get('mautic.lead.model.list');
-        \assert($this->listModel instanceof ListModel);
+        $this->listModel = self::getContainer()->get('mautic.lead.model.list');
         $this->listRepo = $this->listModel->getRepository();
-        \assert($this->listRepo instanceof LeadListRepository);
+
         /** @var LeadModel $leadModel */
-        $leadModel = self::$container->get('mautic.lead.model.lead');
-        /* @var LeadRepository $leadRepo */
+        $leadModel = self::getContainer()->get('mautic.lead.model.lead');
         $this->leadRepo = $leadModel->getRepository();
     }
 
@@ -177,7 +175,7 @@ class ListControllerFunctionalTest extends MauticMysqlTestCase
         $contact1Id = $contacts[0]->getId();
 
         // Rebuild segment - set current count to the cache.
-        $this->runCommand('mautic:segments:update', ['-i' => $segmentId, '--env' => 'test']);
+        $this->testSymfonyCommand('mautic:segments:update', ['-i' => $segmentId, '--env' => 'test']);
 
         // Check segment count UI for 4 contacts.
         $crawler = $this->client->request(Request::METHOD_GET, '/s/segments');

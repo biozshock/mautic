@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class ConfigType.
+ * @extends AbstractType<mixed>
  */
 class ConfigType extends AbstractType
 {

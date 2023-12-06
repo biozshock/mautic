@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class MessageListType.
+ * @extends AbstractType<mixed>
  */
 class MessageListType extends AbstractType
 {

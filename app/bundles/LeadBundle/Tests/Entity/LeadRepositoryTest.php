@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mautic\LeadBundle\Tests\Entity;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -149,7 +150,7 @@ class LeadRepositoryTest extends \PHPUnit\Framework\TestCase
         $query = $this->createMock(AbstractQuery::class);
         $query->expects(self::once())
             ->method('setParameter')
-            ->with('emails', $emails, Connection::PARAM_STR_ARRAY)
+            ->with('emails', $emails, ArrayParameterType::STRING)
             ->willReturn($query);
         $query->expects(self::once())
             ->method('getArrayResult')

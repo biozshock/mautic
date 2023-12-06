@@ -17,7 +17,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Mautic\CampaignBundle\Entity\Campaign;
 
+/**
+ * @extends AbstractType<Campaign>
+ */
 class CampaignType extends AbstractType
 {
     /**
@@ -127,7 +131,7 @@ class CampaignType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Mautic\CampaignBundle\Entity\Campaign',
+            'data_class' => Campaign::class,
         ]);
     }
 }

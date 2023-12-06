@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class FormFieldGroupType.
+ * @extends AbstractType<mixed>
  */
 class FormFieldGroupType extends AbstractType
 {

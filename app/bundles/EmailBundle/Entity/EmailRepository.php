@@ -51,7 +51,7 @@ class EmailRepository extends CommonRepository
      *
      * @param string $email
      *
-     * @return bool
+     * @return false|array{id: numeric-string, unsubscribed: bool, bounced: bool, manual: bool, comments: string}
      */
     public function checkDoNotEmail($email)
     {
@@ -656,7 +656,7 @@ class EmailRepository extends CommonRepository
     /**
      * @param int|null $id
      *
-     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
+     * @return iterable<Email>
      */
     public function getPublishedBroadcasts($id = null)
     {
@@ -674,7 +674,7 @@ class EmailRepository extends CommonRepository
         }
         $qb->where($expr);
 
-        return $qb->getQuery()->iterate();
+        return $qb->getQuery()->toIterable();
     }
 
     /**

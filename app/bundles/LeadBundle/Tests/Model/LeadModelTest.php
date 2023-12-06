@@ -91,7 +91,7 @@ class LeadModelTest extends \PHPUnit\Framework\TestCase
     private $categoryModelMock;
 
     /**
-     * @var MockObject|ChannelListHelper
+     * @var ChannelListHelper
      */
     private $channelListHelperMock;
 
@@ -523,14 +523,14 @@ class LeadModelTest extends \PHPUnit\Framework\TestCase
 
         $mockLeadModel = $this->getMockBuilder(LeadModelStub::class)
             ->disableOriginalConstructor()
-            ->setMethods(['saveEntity', 'getEntity'])
+            ->onlyMethods(['saveEntity', 'getEntity'])
             ->getMock();
 
         $mockLeadModel->setUserHelper($mockUserModel);
 
         $mockCompanyModel = $this->getMockBuilder(CompanyModel::class)
             ->disableOriginalConstructor()
-            ->setMethods(['extractCompanyDataFromImport'])
+            ->onlyMethods(['extractCompanyDataFromImport'])
             ->getMock();
 
         $mockCompanyModel->expects($this->once())->method('extractCompanyDataFromImport')->willReturn([[], []]);

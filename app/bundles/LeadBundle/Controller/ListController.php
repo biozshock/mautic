@@ -328,7 +328,6 @@ class ListController extends FormController
             return $this->isLocked($postActionVars, $segment, 'lead.list');
         }
 
-        /** @var FormInterface $form */
         $form = $segmentModel->createForm($segment, $this->formFactory, $action);
 
         // /Check for a submitted form and process it

@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * Class CampaignEventFormSubmitType.
+ * @extends AbstractType<mixed>
  */
 class CampaignEventFormFieldValueType extends AbstractType
 {

@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PointActionFormSubmitType.
+ * @extends AbstractType<mixed>
  */
 class FormListType extends AbstractType
 {
@@ -66,7 +66,7 @@ class FormListType extends AbstractType
     }
 
     /**
-     * @return string|\Symfony\Component\Form\FormTypeInterface|null
+     * @return string
      */
     public function getParent()
     {

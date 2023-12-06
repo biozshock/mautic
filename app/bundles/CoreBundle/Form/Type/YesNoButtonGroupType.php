@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class YesNoButtonGroupType.
+ * @extends AbstractType<mixed>
  */
 class YesNoButtonGroupType extends AbstractType
 {

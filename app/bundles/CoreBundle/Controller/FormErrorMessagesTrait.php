@@ -42,7 +42,7 @@ trait FormErrorMessagesTrait
     }
 
     /**
-     * @param FormInterface<object> $form
+     * @param FormInterface<mixed> $form
      *
      * @return array<array<string|null>>
      */
@@ -77,7 +77,7 @@ trait FormErrorMessagesTrait
     }
 
     /**
-     * @param FormInterface<object> $form
+     * @param FormInterface<mixed> $form
      */
     public function getFormErrorForBuilder(FormInterface $form): ?string
     {

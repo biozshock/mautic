@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class EventCanvasSettingsType.
+ * @extends AbstractType<mixed>
  */
 class EventCanvasSettingsType extends AbstractType
 {

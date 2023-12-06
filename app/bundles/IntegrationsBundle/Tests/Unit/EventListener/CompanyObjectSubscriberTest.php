@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mautic\IntegrationsBundle\Tests\Unit\EventListener;
 
+use Mautic\IntegrationsBundle\Entity\ObjectMapping;
 use Mautic\IntegrationsBundle\Event\InternalObjectCreateEvent;
 use Mautic\IntegrationsBundle\Event\InternalObjectEvent;
 use Mautic\IntegrationsBundle\Event\InternalObjectFindByIdEvent;
@@ -14,6 +15,7 @@ use Mautic\IntegrationsBundle\Event\InternalObjectUpdateEvent;
 use Mautic\IntegrationsBundle\EventListener\CompanyObjectSubscriber;
 use Mautic\IntegrationsBundle\IntegrationEvents;
 use Mautic\IntegrationsBundle\Sync\DAO\DateRange;
+use Mautic\IntegrationsBundle\Sync\DAO\Mapping\UpdatedObjectMappingDAO;
 use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Company;
 use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\Object\Contact;
 use Mautic\IntegrationsBundle\Sync\SyncDataExchange\Internal\ObjectHelper\CompanyObjectHelper;
@@ -91,14 +93,15 @@ class CompanyObjectSubscriberTest extends TestCase
     {
         $event = new InternalObjectUpdateEvent(new Company(), [123], [['id' => 345]]);
 
+        $objectMapping = $this->createMock(UpdatedObjectMappingDAO::class);
         $this->companyObjectHelper->expects($this->once())
             ->method('update')
             ->with([123], [['id' => 345]])
-            ->willReturn([['object_mapping_1']]);
+            ->willReturn([$objectMapping]);
 
         $this->subscriber->updateCompanies($event);
 
-        $this->assertSame([['object_mapping_1']], $event->getUpdatedObjectMappings());
+        $this->assertSame([$objectMapping], $event->getUpdatedObjectMappings());
     }
 
     public function testCreateCompaniesWithWrongObject(): void
@@ -117,14 +120,15 @@ class CompanyObjectSubscriberTest extends TestCase
     {
         $event = new InternalObjectCreateEvent(new Company(), [['somefield' => 'somevalue']]);
 
+        $objectMapping = $this->createMock(ObjectMapping::class);
         $this->companyObjectHelper->expects($this->once())
             ->method('create')
             ->with([['somefield' => 'somevalue']])
-            ->willReturn([['object_mapping_1']]);
+            ->willReturn([$objectMapping]);
 
         $this->subscriber->createCompanies($event);
 
-        $this->assertSame([['object_mapping_1']], $event->getObjectMappings());
+        $this->assertSame([$objectMapping], $event->getObjectMappings());
     }
 
     public function testFindCompaniesByIdsWithWrongObject(): void

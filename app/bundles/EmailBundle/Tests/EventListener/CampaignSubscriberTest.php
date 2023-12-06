@@ -36,7 +36,7 @@ class CampaignSubscriberTest extends \PHPUnit\Framework\TestCase
     private $emailModel;
 
     /**
-     * @var RealTimeExecutioner|\PHPUnit_Framework_MockObject_MockObject
+     * @var RealTimeExecutioner|\PHPUnit\Framework\MockObject\MockObject
      */
     private $realTimeExecutioner;
 

@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class CampaignEventFormSubmitType.
+ * @extends AbstractType<mixed>
  */
 class CampaignEventFormSubmitType extends AbstractType
 {

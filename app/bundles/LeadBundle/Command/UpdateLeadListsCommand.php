@@ -68,7 +68,7 @@ class UpdateLeadListsCommand extends ModeratedCommand
     {
         $id                    = $input->getOption('list-id');
         $batch                 = $input->getOption('batch-limit');
-        $max                   = $input->getOption('max-contacts');
+        $max                   = (int) $input->getOption('max-contacts');
         $enableTimeMeasurement = (bool) $input->getOption('timing');
         $output                = ($input->getOption('quiet')) ? new NullOutput() : $output;
 

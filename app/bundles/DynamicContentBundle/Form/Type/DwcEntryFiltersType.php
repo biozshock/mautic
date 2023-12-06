@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class DwcEntryFiltersType.
+ * @extends AbstractType<mixed>
  */
 class DwcEntryFiltersType extends AbstractType
 {

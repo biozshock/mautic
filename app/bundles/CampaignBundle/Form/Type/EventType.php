@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class EventType.
+ * @extends AbstractType<mixed>
  */
 class EventType extends AbstractType
 {

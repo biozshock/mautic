@@ -20,7 +20,7 @@ final class FormAdjustmentsProviderTest extends \PHPUnit\Framework\TestCase
     private $dispatcher;
 
     /**
-     * @var MockObject&FormInterface<FormInterface>
+     * @var MockObject&FormInterface<mixed>
      */
     private $form;
 

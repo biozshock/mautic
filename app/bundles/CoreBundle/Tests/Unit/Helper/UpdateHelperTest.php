@@ -719,7 +719,7 @@ class UpdateHelperTest extends TestCase
             }
         }
 
-        $this->assertSame(2, count($errors));
+        $this->assertCount(2, $errors);
     }
 
     public function testPassingPreUpdateChecks(): void
@@ -744,7 +744,7 @@ class UpdateHelperTest extends TestCase
             }
         }
 
-        $this->assertSame(0, count($errors));
+        $this->assertCount(0, $errors);
     }
 
     private function getFailingPreUpdateTest(): AbstractPreUpdateCheck
