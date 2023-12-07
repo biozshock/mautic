@@ -12,7 +12,7 @@ class IframeAvailabilityCheckerTest extends \PHPUnit\Framework\TestCase
     private \PHPUnit\Framework\MockObject\MockObject $translator;
 
     /**
-     * @var IframeAvailabilityChecker|MockObject
+     * @var IframeAvailabilityChecker
      */
     private \MauticPlugin\MauticFocusBundle\Helper\IframeAvailabilityChecker $helper;
 

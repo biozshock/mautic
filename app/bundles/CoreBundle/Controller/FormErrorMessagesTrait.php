@@ -58,6 +58,7 @@ trait FormErrorMessagesTrait
 
     /**
      * @param FormInterface<mixed> $form
+     *
      * @return array<string|null>
      */
     public function getFormErrorCodes(FormInterface $form): array

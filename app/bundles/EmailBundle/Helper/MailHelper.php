@@ -25,6 +25,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Header\HeaderInterface;
 use Symfony\Component\Mime\Header\UnstructuredHeader;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 
 class MailHelper
@@ -51,7 +52,7 @@ class MailHelper
     protected $twig;
 
     /**
-     * @var null
+     * @var EventDispatcherInterface|null
      */
     protected $dispatcher;
 

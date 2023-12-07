@@ -267,15 +267,8 @@ class PublicControllerTest extends MauticMysqlTestCase
             );
 
         $container = $this->createMock(Container::class);
-        $container->method('has')
-            ->will($this->returnValue(true));
-        $container->expects(self::once())
-            ->method('get')
-            ->willReturnMap(
-                [
-                    ['router', Container::EXCEPTION_ON_INVALID_REFERENCE, $router],
-                ]
-            );
+        $container->expects(self::never())
+            ->method('get');
 
         $this->request->attributes->set('ignore_mismatch', true);
 
@@ -312,6 +305,7 @@ class PublicControllerTest extends MauticMysqlTestCase
             $analyticsHelper,
             $assetHelper,
             $this->createMock(Tracking404Model::class),
+            $router,
             '/page/a',
         );
 

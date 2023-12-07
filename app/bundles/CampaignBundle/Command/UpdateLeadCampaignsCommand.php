@@ -114,6 +114,30 @@ class UpdateLeadCampaignsCommand extends ModeratedCommand
         $this->quiet    = (bool) $input->getOption('quiet');
         $this->output   = ($this->quiet) ? new NullOutput() : $output;
 
+        if (is_numeric($id)) {
+            $id = (int) $id;
+        }
+
+        if (is_numeric($maxThreads)) {
+            $maxThreads = (int) $maxThreads;
+        }
+
+        if (is_numeric($threadId)) {
+            $threadId = (int) $threadId;
+        }
+
+        if (is_numeric($contactMaxId)) {
+            $contactMaxId = (int) $contactMaxId;
+        }
+
+        if (is_numeric($contactMinId)) {
+            $contactMinId = (int) $contactMinId;
+        }
+
+        if (is_numeric($contactId)) {
+            $contactId = (int) $contactId;
+        }
+
         if ($threadId && $maxThreads && (int) $threadId > (int) $maxThreads) {
             $this->output->writeln('--thread-id cannot be larger than --max-thread');
 
@@ -138,17 +162,14 @@ class UpdateLeadCampaignsCommand extends ModeratedCommand
         } else {
             $campaigns = $this->campaignRepository->getEntities(
                 [
-                    'iterator_mode' => true,
+                    'iterable_mode' => true,
                 ]
             );
 
-            while (false !== ($results = $campaigns->next())) {
-                // Get first item; using reset as the key will be the ID and not 0
-                $campaign = reset($results);
-
+            foreach ($campaigns as $campaign) {
                 $this->updateCampaign($campaign);
 
-                unset($results, $campaign);
+                unset($campaign);
             }
         }
 
