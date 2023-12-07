@@ -4,7 +4,7 @@ namespace Mautic\LeadBundle\Model;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use Mautic\CoreBundle\Helper\Chart\ChartQuery;
 use Mautic\CoreBundle\Helper\Chart\LineChart;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
@@ -512,10 +512,8 @@ class ImportModel extends FormModel
      * Initialize LeadEventLog object and configure it as the import event.
      *
      * @param int $lineNumber
-     *
-     * @return LeadEventLog
      */
-    public function initEventLog(Import $import, $lineNumber)
+    public function initEventLog(Import $import, $lineNumber): LeadEventLog
     {
         $eventLog = new LeadEventLog();
         $eventLog->setUserId($import->getCreatedBy())

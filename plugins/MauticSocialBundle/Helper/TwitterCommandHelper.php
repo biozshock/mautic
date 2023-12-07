@@ -380,9 +380,9 @@ class TwitterCommandHelper
      *
      * @param string $name Space separated first & last name. Supports multiple first names
      *
-     * @return array($firstName, $lastName)
+     * @return array{0: string, 1?: string}
      */
-    private function splitName($name)
+    private function splitName(string $name): array
     {
         // array the entire name
         $nameParts = explode(' ', $name);

@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @extends CommonApiController<User>
@@ -70,9 +71,9 @@ class UserApiController extends CommonApiController
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function getSelfAction()
+    public function getSelfAction(TokenStorageInterface $tokenStorage)
     {
-        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+        $currentUser = $tokenStorage->getToken()->getUser();
         $view        = $this->view($currentUser, Response::HTTP_OK);
 
         return $this->handleView($view);
@@ -218,7 +219,7 @@ class UserApiController extends CommonApiController
         }
 
         $filter = $request->query->get('filter', null);
-        $limit  = $request->query->get('limit', null);
+        $limit  = (int) $request->query->get('limit', null);
         $roles  = $this->model->getLookupResults('role', $filter, $limit);
 
         $view    = $this->view($roles, Response::HTTP_OK);

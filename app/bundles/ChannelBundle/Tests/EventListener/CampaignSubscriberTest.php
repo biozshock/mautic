@@ -64,7 +64,7 @@ class CampaignSubscriberTest extends \PHPUnit\Framework\TestCase
     private $scheduler;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|LegacyEventDispatcher
+     * @var LegacyEventDispatcher
      */
     private $legacyDispatcher;
 

@@ -328,6 +328,11 @@ class User extends FormEntity implements UserInterface, EquatableInterface, Pass
         return $this->username;
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -671,7 +676,7 @@ class User extends FormEntity implements UserInterface, EquatableInterface, Pass
     /**
      * Set locale.
      *
-     * @param string $locale
+     * @param string|null $locale
      *
      * @return User
      */
@@ -793,8 +798,8 @@ class User extends FormEntity implements UserInterface, EquatableInterface, Pass
      */
     public function isEqualTo(UserInterface $user)
     {
-        $thisUser = $this->getId().$this->getUsername().$this->getPassword();
-        $thatUser = $user->getId().$user->getUsername().$user->getPassword();
+        $thisUser = $this->getId().$this->getUserIdentifier().$this->getPassword();
+        $thatUser = $user->getId().$user->getUserIdentifier().$user->getPassword();
 
         return $thisUser === $thatUser;
     }

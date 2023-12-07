@@ -51,7 +51,7 @@ class EmailRepository extends CommonRepository
      *
      * @param string $email
      *
-     * @return bool
+     * @return false|array{id: numeric-string, unsubscribed: bool, bounced: bool, manual: bool, comments: string}
      */
     public function checkDoNotEmail($email)
     {
@@ -103,7 +103,7 @@ class EmailRepository extends CommonRepository
             ->createQueryBuilder()
             ->select('e')
             ->from(\Mautic\EmailBundle\Entity\Email::class, 'e', 'e.id');
-        if (empty($args['iterator_mode'])) {
+        if (empty($args['iterator_mode']) && empty($args['iterable_mode'])) {
             $q->leftJoin('e.category', 'c');
 
             if (empty($args['ignoreListJoin']) && (!isset($args['email_type']) || 'list' == $args['email_type'])) {
@@ -656,7 +656,7 @@ class EmailRepository extends CommonRepository
     /**
      * @param int|null $id
      *
-     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
+     * @return iterable<Email>
      */
     public function getPublishedBroadcasts($id = null)
     {
@@ -674,7 +674,7 @@ class EmailRepository extends CommonRepository
         }
         $qb->where($expr);
 
-        return $qb->getQuery()->iterate();
+        return $qb->getQuery()->toIterable();
     }
 
     /**

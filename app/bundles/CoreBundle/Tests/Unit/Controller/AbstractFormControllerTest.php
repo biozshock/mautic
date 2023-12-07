@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class AbstractFormControllerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|AbstractFormController
+     * @var AbstractFormController
      */
     private $classFromAbstractFormController;
 
@@ -53,7 +53,7 @@ class AbstractFormControllerTest extends \PHPUnit\Framework\TestCase
                 return $this->isFormCancelled($form);
             }
         };
-        $this->formMock             = $this->createMock(Form::class);
+        $this->formMock = $this->createMock(Form::class);
     }
 
     /**

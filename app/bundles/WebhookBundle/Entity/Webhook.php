@@ -49,7 +49,7 @@ class Webhook extends FormEntity
     private $category;
 
     /**
-     * @var ArrayCollection<int, \Mautic\WebhookBundle\Entity\Event>
+     * @var Collection<int, \Mautic\WebhookBundle\Entity\Event>
      */
     private $events;
 
@@ -296,7 +296,7 @@ class Webhook extends FormEntity
     }
 
     /**
-     * @return mixed
+     * @return Collection<int, \Mautic\WebhookBundle\Entity\Event>
      */
     public function getEvents()
     {
