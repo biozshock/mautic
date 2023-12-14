@@ -9,7 +9,6 @@ use Mautic\LeadBundle\Segment\ContactSegmentFilterCrate;
 use Mautic\LeadBundle\Segment\Decorator\BaseDecorator;
 use Mautic\LeadBundle\Segment\Decorator\FilterDecoratorInterface;
 use Mautic\LeadBundle\Segment\Exception\FieldNotFoundException;
-use Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts;
 use Mautic\LeadBundle\Segment\Query\Filter\FilterQueryBuilderInterface;
 use Mautic\LeadBundle\Segment\Query\QueryBuilder;
 use Mautic\LeadBundle\Segment\TableSchemaColumnsCache;
@@ -24,7 +23,7 @@ class ContactSegmentFilterTest extends TestCase
     private $contactSegmentFilterCrate;
 
     /**
-     * @var BaseDecorator|MockObject
+     * @var FilterDecoratorInterface&MockObject
      */
     private $filterDecorator;
 
@@ -182,7 +181,6 @@ class ContactSegmentFilterTest extends TestCase
 
         $parts = $filter->getIntegrationCampaignParts();
 
-        self::assertInstanceOf(IntegrationCampaignParts::class, $parts);
         self::assertEquals($value, $parts->getCampaignId());
     }
 
@@ -208,7 +206,7 @@ class ContactSegmentFilterTest extends TestCase
         self::assertNull($filter->getRelationJoinTable());
 
         $this->filterDecorator = $this->getMockBuilder(FilterDecoratorInterface::class)
-            ->setMethods(['getRelationJoinTable'])
+            ->addMethods(['getRelationJoinTable'])
             ->getMockForAbstractClass();
         $this->filterDecorator->expects(self::once())
             ->method('getRelationJoinTable')
@@ -322,7 +320,7 @@ class ContactSegmentFilterTest extends TestCase
         self::assertNull($filter->getRelationJoinTableField());
 
         $this->filterDecorator = $this->getMockBuilder(FilterDecoratorInterface::class)
-            ->setMethods(['getRelationJoinTableField'])
+            ->addMethods(['getRelationJoinTableField'])
             ->getMockForAbstractClass();
         $this->filterDecorator->expects(self::once())
             ->method('getRelationJoinTableField')

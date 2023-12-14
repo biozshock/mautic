@@ -10,6 +10,7 @@ use Mautic\CoreBundle\Helper\UserHelper;
 use Mautic\CoreBundle\Model\FormModel;
 use Mautic\CoreBundle\Security\Permissions\CorePermissions;
 use Mautic\CoreBundle\Translation\Translator;
+use Mautic\LeadBundle\Field\FieldList;
 use Mautic\LeadBundle\Model\FieldModel;
 use Mautic\PluginBundle\Entity\Plugin;
 use Psr\Log\LoggerInterface;
@@ -31,10 +32,13 @@ class PluginModel extends FormModel
      */
     private $bundleHelper;
 
-    public function __construct(FieldModel $leadFieldModel, CoreParametersHelper $coreParametersHelper, BundleHelper $bundleHelper, EntityManager $em, CorePermissions $security, EventDispatcherInterface $dispatcher, UrlGeneratorInterface $router, Translator $translator, UserHelper $userHelper, LoggerInterface $mauticLogger)
+    private FieldList $fieldList;
+
+    public function __construct(FieldModel $leadFieldModel, FieldList $fieldList, CoreParametersHelper $coreParametersHelper, BundleHelper $bundleHelper, EntityManager $em, CorePermissions $security, EventDispatcherInterface $dispatcher, UrlGeneratorInterface $router, Translator $translator, UserHelper $userHelper, LoggerInterface $mauticLogger)
     {
-        $this->leadFieldModel       = $leadFieldModel;
-        $this->bundleHelper         = $bundleHelper;
+        $this->leadFieldModel = $leadFieldModel;
+        $this->bundleHelper   = $bundleHelper;
+        $this->fieldList      = $fieldList;
 
         parent::__construct($em, $security, $dispatcher, $router, $translator, $userHelper, $mauticLogger, $coreParametersHelper);
     }
@@ -67,7 +71,7 @@ class PluginModel extends FormModel
      */
     public function getLeadFields()
     {
-        return $this->leadFieldModel->getFieldList();
+        return $this->fieldList->getFieldList();
     }
 
     /**
@@ -75,7 +79,7 @@ class PluginModel extends FormModel
      */
     public function getCompanyFields()
     {
-        return $this->leadFieldModel->getFieldList(true, true, ['isPublished' => true, 'object' => 'company']);
+        return $this->fieldList->getFieldList(true, true, ['isPublished' => true, 'object' => 'company']);
     }
 
     public function saveFeatureSettings($entity)
@@ -140,7 +144,7 @@ class PluginModel extends FormModel
      */
     public function getInstalledPluginTables(array $pluginsMetadata)
     {
-        $currentSchema          = $this->em->getConnection()->getSchemaManager()->createSchema();
+        $currentSchema          = $this->em->getConnection()->createSchemaManager()->introspectSchema();
         $installedPluginsTables = [];
 
         foreach ($pluginsMetadata as $bundleName => $pluginMetadata) {

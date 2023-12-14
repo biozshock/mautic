@@ -11,6 +11,7 @@ use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntityLookupChoiceLoader implements ChoiceLoaderInterface
@@ -26,7 +27,7 @@ class EntityLookupChoiceLoader implements ChoiceLoaderInterface
     protected $choices = [];
 
     /**
-     * @var Options
+     * @var Options<array<mixed>>
      */
     protected $options;
 
@@ -46,19 +47,24 @@ class EntityLookupChoiceLoader implements ChoiceLoaderInterface
     protected $connection;
 
     /**
-     * @param ModelFactory<object> $modelFactory
-     * @param array                $options
+     * @param ModelFactory<object>               $modelFactory
+     * @param array<mixed>|Options<array<mixed>> $options
      */
     public function __construct(ModelFactory $modelFactory, TranslatorInterface $translator, Connection $connection, $options = [])
     {
         $this->modelFactory = $modelFactory;
         $this->translator   = $translator;
         $this->connection   = $connection;
-        $this->options      = $options;
+
+        if (is_array($options)) {
+            $options = (new OptionsResolver())->setDefaults($options);
+        }
+
+        $this->options = $options;
     }
 
     /**
-     * @param Options|array $options
+     * @param Options<array<mixed>>|array<mixed> $options
      */
     public function setOptions($options)
     {

@@ -10,7 +10,6 @@ use Mautic\EmailBundle\Model\EmailModel;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Entity\LeadList;
 use Mautic\LeadBundle\Entity\ListLead;
-use Mautic\LeadBundle\Model\LeadModel;
 
 class EmailModelFunctionalTest extends MauticMysqlTestCase
 {
@@ -26,8 +25,7 @@ class EmailModelFunctionalTest extends MauticMysqlTestCase
         $this->addContactsToSegment($contacts, $segment);
         $email = $this->createEmail($segment);
 
-        $emailModel                                             =  self::$container->get('mautic.email.model.email');
-        \assert($emailModel instanceof EmailModel);
+        $emailModel  =  self::getContainer()->get('mautic.email.model.email');
         [$sentCount] = $emailModel->sendEmailToLists($email, [$segment], null, null, null, null, null, 3, 1);
         $this->assertEquals($sentCount, 7);
         [$sentCount] = $emailModel->sendEmailToLists($email, [$segment], null, null, null, null, null, 3, 2);
@@ -49,8 +47,7 @@ class EmailModelFunctionalTest extends MauticMysqlTestCase
             $contacts[] = $contact;
         }
 
-        $contactModel = self::$container->get('mautic.lead.model.lead');
-        \assert($contactModel instanceof LeadModel);
+        $contactModel = self::getContainer()->get('mautic.lead.model.lead');
         $contactModel->saveEntities($contacts);
 
         return $contacts;
@@ -157,7 +154,7 @@ class EmailModelFunctionalTest extends MauticMysqlTestCase
        $this->em->detach($childrenEmail);
 
        /** @var EmailModel $emailModel */
-       $emailModel = self::$container->get('mautic.email.model.email');
+       $emailModel = self::getContainer()->get('mautic.email.model.email');
        $parentEmail->setName('Test change');
        $emailModel->saveEntity($parentEmail);
 

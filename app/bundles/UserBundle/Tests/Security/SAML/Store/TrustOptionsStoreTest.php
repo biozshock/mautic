@@ -2,7 +2,6 @@
 
 namespace Mautic\UserBundle\Tests\Security\SAML\Store;
 
-use LightSaml\Meta\TrustOptions\TrustOptions;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
 use Mautic\UserBundle\Security\SAML\Store\TrustOptionsStore;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -23,12 +22,6 @@ class TrustOptionsStoreTest extends TestCase
     {
         $this->coreParametersHelper = $this->createMock(CoreParametersHelper::class);
         $this->store                = new TrustOptionsStore($this->coreParametersHelper, 'foobar');
-    }
-
-    public function testTrustOptionsConfiguredIfSamlEnabledAndEntityIdMatches()
-    {
-        $store = $this->store->get('foobar');
-        $this->assertInstanceOf(TrustOptions::class, $store);
     }
 
     public function testHasTrustOptionsIfSamlConfiguredAndEntityIdMatches()

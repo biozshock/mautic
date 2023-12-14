@@ -74,7 +74,7 @@ class PushLeadActivityCommand extends Command
             $endDate = date('c');
         }
 
-        if ($integration && $startDate && $endDate) {
+        if ($integration) {
             $integrationObject = $this->integrationHelper->getIntegrationObject($integration);
 
             if (null !== $integrationObject && method_exists($integrationObject, 'pushLeadActivity')) {

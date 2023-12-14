@@ -16,8 +16,18 @@ class ConfigMetadataTest extends TestCase
 
     protected function setUp(): void
     {
+        $fieldHelperReflection = new \ReflectionClass(BundleMetadata::class);
+
+        $methods = array_map(static function (\ReflectionMethod $m): string {
+            return $m->name;
+        }, $fieldHelperReflection->getMethods());
+        $methodsToMock = array_diff(
+            $methods,
+            ['setConfig', 'toArray']
+        );
+
         $this->metadata = $this->getMockBuilder(BundleMetadata::class)
-            ->setMethodsExcept(['setConfig', 'toArray'])
+            ->onlyMethods($methodsToMock)
             ->disableOriginalConstructor()
             ->getMock();
     }

@@ -13,6 +13,7 @@ use Mautic\LeadBundle\Entity\LeadRepository;
 use Mautic\LeadBundle\EventListener\OwnerSubscriber;
 use Mautic\LeadBundle\Model\LeadModel;
 use Monolog\Logger;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Mailer\Mailer;
 
 class OwnerSubscriberTest extends \PHPUnit\Framework\TestCase
@@ -200,7 +201,7 @@ class OwnerSubscriberTest extends \PHPUnit\Framework\TestCase
      * @param bool  $mailIsOwner
      * @param array $parameterMap
      *
-     * @return MauticFactory|\PHPUnit_Framework_MockObject_MockObject
+     * @return MauticFactory&MockObject
      */
     protected function getMockFactory($mailIsOwner = true, $parameterMap = [])
     {
@@ -226,7 +227,7 @@ class OwnerSubscriberTest extends \PHPUnit\Framework\TestCase
         $mockLeadModel->method('getRepository')
             ->willReturn($mockLeadRepository);
 
-        /** @var MauticFactory|\PHPUnit_Framework_MockObject_MockObject $mockFactory */
+        /** @var MauticFactory&MockObject $mockFactory */
         $mockFactory = $this->getMockBuilder(MauticFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -293,11 +294,11 @@ class OwnerSubscriberTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return Translator|\PHPUnit_Framework_MockObject_MockObject
+     * @return Translator&MockObject
      */
     protected function getMockTranslator()
     {
-        /** @var Translator|\PHPUnit_Framework_MockObject_MockObject $translator */
+        /** @var Translator&MockObject $translator */
         $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
             ->getMock();

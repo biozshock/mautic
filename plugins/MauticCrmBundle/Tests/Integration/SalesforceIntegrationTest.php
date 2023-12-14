@@ -179,8 +179,6 @@ class SalesforceIntegrationTest extends AbstractIntegrationTestCase
         $this->sfMockMethods = ['makeRequest', 'getMauticContactsToCreate'];
 
         $sf = $this->getSalesforceIntegration();
-        $sf->expects($this->never())
-            ->method('findLeadsToCreate');
 
         $sf->expects($this->never())
             ->method('getMauticContactsToCreate');
@@ -1011,6 +1009,7 @@ class SalesforceIntegrationTest extends AbstractIntegrationTestCase
                 $this->fieldModel,
                 $integrationEntityModelMock,
                 $this->doNotContact,
+                $this->fieldsWithUniqueIdentifier,
             ])
             ->onlyMethods($this->sfMockMethods)
             ->addMethods(['findLeadsToCreate'])

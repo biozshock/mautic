@@ -2,7 +2,7 @@
 
 namespace Mautic\PluginBundle\Entity;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Mautic\CoreBundle\Entity\CommonRepository;
 
@@ -12,13 +12,13 @@ use Mautic\CoreBundle\Entity\CommonRepository;
 class IntegrationEntityRepository extends CommonRepository
 {
     /**
-     * @param array<int>|int|null $internalEntityIds
-     * @param null                $startDate
-     * @param null                $endDate
-     * @param bool                $push
-     * @param int                 $start
-     * @param int                 $limit
-     * @param null                $integrationEntityIds
+     * @param array<int>|int|null               $internalEntityIds
+     * @param null                              $startDate
+     * @param null                              $endDate
+     * @param bool                              $push
+     * @param int                               $start
+     * @param int                               $limit
+     * @param int|string|array<int|string>|null $integrationEntityIds
      *
      * @return array
      */
@@ -66,7 +66,7 @@ class IntegrationEntityRepository extends CommonRepository
         if ($internalEntityIds) {
             if (is_array($internalEntityIds)) {
                 $q->andWhere('i.internal_entity_id in (:internalEntityIds)')
-                    ->setParameter('internalEntityIds', $internalEntityIds, Connection::PARAM_STR_ARRAY);
+                    ->setParameter('internalEntityIds', $internalEntityIds, ArrayParameterType::STRING);
             } else {
                 $q->andWhere('i.internal_entity_id = :internalEntityId')
                     ->setParameter('internalEntityId', $internalEntityIds);
@@ -86,7 +86,7 @@ class IntegrationEntityRepository extends CommonRepository
         if ($integrationEntityIds) {
             if (is_array($integrationEntityIds)) {
                 $q->andWhere('i.integration_entity_id in (:integrationEntityIds)')
-                    ->setParameter('integrationEntityIds', $integrationEntityIds, Connection::PARAM_STR_ARRAY);
+                    ->setParameter('integrationEntityIds', $integrationEntityIds, ArrayParameterType::STRING);
             } else {
                 $q->andWhere('i.integration_entity_id = :integrationEntityId')
                     ->setParameter('integrationEntityId', $integrationEntityIds);

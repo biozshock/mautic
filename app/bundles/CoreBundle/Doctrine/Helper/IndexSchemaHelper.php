@@ -62,7 +62,7 @@ class IndexSchemaHelper
     {
         $this->db     = $db;
         $this->prefix = $prefix;
-        $this->sm     = $this->db->getSchemaManager();
+        $this->sm     = $this->db->createSchemaManager();
     }
 
     /**
@@ -76,7 +76,7 @@ class IndexSchemaHelper
             throw new SchemaException("Table $name does not exist!");
         }
 
-        $this->table = $this->sm->listTableDetails($this->prefix.$name);
+        $this->table = $this->sm->introspectTable($this->prefix.$name);
 
         return $this;
     }
@@ -136,7 +136,7 @@ class IndexSchemaHelper
      */
     public function executeChanges()
     {
-        $platform = $this->sm->getDatabasePlatform();
+        $platform = $this->db->getDatabasePlatform();
 
         $sql = [];
         if (count($this->changedIndexes)) {

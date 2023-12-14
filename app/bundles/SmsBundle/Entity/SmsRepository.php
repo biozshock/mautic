@@ -23,7 +23,7 @@ class SmsRepository extends CommonRepository
             ->select($this->getTableAlias())
             ->from(\Mautic\SmsBundle\Entity\Sms::class, $this->getTableAlias(), $this->getTableAlias().'.id');
 
-        if (empty($args['iterator_mode'])) {
+        if (empty($args['iterator_mode']) && empty($args['iterable_mode'])) {
             $q->leftJoin($this->getTableAlias().'.category', 'c');
         }
 
@@ -33,11 +33,11 @@ class SmsRepository extends CommonRepository
     }
 
     /**
-     * @param null $id
+     * @param numeric|null $id
      *
-     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
+     * @return iterable<Sms>|\Doctrine\ORM\Internal\Hydration\IterableResult<Sms>
      */
-    public function getPublishedBroadcasts($id = null)
+    public function getPublishedBroadcasts($id = null, bool $oldImplementation = true)
     {
         $qb   = $this->createQueryBuilder($this->getTableAlias());
         $expr = $this->getPublishedByDateExpression($qb, null, true, true, false);
@@ -53,7 +53,13 @@ class SmsRepository extends CommonRepository
         }
         $qb->where($expr);
 
-        return $qb->getQuery()->iterate();
+        if ($oldImplementation) {
+            @\trigger_error('Use the method with second parameter false. Method will be changed in 6.0.', \E_USER_DEPRECATED);
+
+            return $qb->getQuery()->iterate();
+        }
+
+        return $qb->getQuery()->toIterable();
     }
 
     /**

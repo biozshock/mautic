@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 class DashboardController extends AbstractFormController
 {
@@ -29,7 +31,7 @@ class DashboardController extends AbstractFormController
      *
      * @return JsonResponse|Response
      */
-    public function indexAction(Request $request, WidgetService $widget, FormFactoryInterface $formFactory, PathsHelper $pathsHelper)
+    public function indexAction(Request $request, WidgetService $widget, FormFactoryInterface $formFactory, PathsHelper $pathsHelper, RouterInterface $urlGenerator)
     {
         $model   = $this->getModel('dashboard');
         \assert($model instanceof DashboardModel);
@@ -37,7 +39,7 @@ class DashboardController extends AbstractFormController
 
         // Apply the default dashboard if no widget exists
         if (!count($widgets) && $this->user->getId()) {
-            return $this->applyDashboardFileAction($request, $pathsHelper, 'global.default');
+            return $this->applyDashboardFileAction($request, $pathsHelper, $urlGenerator, 'global.default');
         }
 
         $action          = $this->generateUrl('mautic_dashboard_index');
@@ -94,7 +96,7 @@ class DashboardController extends AbstractFormController
     /**
      * @return JsonResponse|Response
      */
-    public function widgetAction(Request $request, WidgetService $widgetService, $widgetId)
+    public function widgetAction(Request $request, WidgetService $widgetService, Environment $twig, $widgetId)
     {
         if (!$request->isXmlHttpRequest()) {
             throw new NotFoundHttpException('Not found.');
@@ -107,7 +109,7 @@ class DashboardController extends AbstractFormController
             throw new NotFoundHttpException('Not found.');
         }
 
-        $content = $this->get('twig')->render(
+        $content = $twig->render(
             '@MauticDashboard/Dashboard/widget.html.twig',
             ['widget' => $widget]
         );
@@ -393,7 +395,7 @@ class DashboardController extends AbstractFormController
      *
      * @return JsonResponse|Response
      */
-    public function applyDashboardFileAction(Request $request, PathsHelper $pathsHelper, $file = null)
+    public function applyDashboardFileAction(Request $request, PathsHelper $pathsHelper, RouterInterface $urlGenerator, $file = null)
     {
         if (!$file) {
             $file = $request->get('file');
@@ -438,7 +440,7 @@ class DashboardController extends AbstractFormController
             }
         }
 
-        return $this->redirect($this->get('router')->generate('mautic_dashboard_index'));
+        return $this->redirect($urlGenerator->generate('mautic_dashboard_index'));
     }
 
     /**

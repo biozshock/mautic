@@ -37,7 +37,7 @@ class UserMapper implements UsernameMapperInterface
     {
         $user = $this->getUser($response);
 
-        return $user->getUsername();
+        return $user->getUserIdentifier();
     }
 
     /**

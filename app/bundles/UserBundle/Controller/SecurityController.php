@@ -2,11 +2,21 @@
 
 namespace Mautic\UserBundle\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Mautic\CoreBundle\Controller\CommonController;
+use Mautic\CoreBundle\Factory\MauticFactory;
+use Mautic\CoreBundle\Factory\ModelFactory;
+use Mautic\CoreBundle\Helper\CoreParametersHelper;
+use Mautic\CoreBundle\Helper\UserHelper;
+use Mautic\CoreBundle\Security\Permissions\CorePermissions;
+use Mautic\CoreBundle\Service\FlashBag;
+use Mautic\CoreBundle\Translation\Translator;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -15,6 +25,14 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends CommonController implements EventSubscriberInterface
 {
+    private AuthorizationCheckerInterface $authChecker;
+
+    public function __construct(ManagerRegistry $doctrine, MauticFactory $factory, ModelFactory $modelFactory, UserHelper $userHelper, CoreParametersHelper $coreParametersHelper, EventDispatcherInterface $dispatcher, Translator $translator, FlashBag $flashBag, RequestStack $requestStack, CorePermissions $security, AuthorizationCheckerInterface $authChecker)
+    {
+        $this->authChecker = $authChecker;
+        parent::__construct($doctrine, $factory, $modelFactory, $userHelper, $coreParametersHelper, $dispatcher, $translator, $flashBag, $requestStack, $security);
+    }
+
     public function onRequest(RequestEvent $event): void
     {
         $controller = $event->getRequest()->attributes->get('_controller');
@@ -24,12 +42,9 @@ class SecurityController extends CommonController implements EventSubscriberInte
             return;
         }
 
-        $authChecker = $this->get('security.authorization_checker');
-        \assert($authChecker instanceof AuthorizationCheckerInterface);
-
         // redirect user if they are already authenticated
-        if ($authChecker->isGranted('IS_AUTHENTICATED_FULLY') ||
-            $authChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
+        if ($this->authChecker->isGranted('IS_AUTHENTICATED_FULLY') ||
+            $this->authChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
         ) {
             $redirectUrl = $this->generateUrl('mautic_dashboard_index');
             $event->setResponse(new RedirectResponse($redirectUrl));

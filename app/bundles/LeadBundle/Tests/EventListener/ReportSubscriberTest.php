@@ -86,7 +86,7 @@ class ReportSubscriberTest extends \PHPUnit\Framework\TestCase
     private $reportGeneratorEventMock;
 
     /**
-     * @var MockObject|ChannelListHelper
+     * @var ChannelListHelper
      */
     private $channelListHelperMock;
 
@@ -131,12 +131,12 @@ class ReportSubscriberTest extends \PHPUnit\Framework\TestCase
     private $pointsChangeLogRepositoryMock;
 
     /**
-     * @var MockObject|ReportMock
+     * @var MockObject&Report
      */
     private $reportMock;
 
     /**
-     * @var MockObject|ReportDataEventMock
+     * @var MockObject&ReportDataEvent
      */
     private $reportDataEventMock;
 

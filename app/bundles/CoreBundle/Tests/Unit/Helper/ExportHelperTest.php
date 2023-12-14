@@ -14,7 +14,6 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ExportHelperTest extends TestCase
@@ -73,9 +72,8 @@ class ExportHelperTest extends TestCase
     {
         $stream = $this->exportHelper->exportDataAs($this->dummyData, ExportHelper::EXPORT_TYPE_CSV, 'demo-file.csv');
 
-        $this->assertInstanceOf(StreamedResponse::class, $stream);
         $this->assertSame(200, $stream->getStatusCode());
-        $this->assertSame(false, $stream->isEmpty());
+        $this->assertFalse($stream->isEmpty());
 
         ob_start();
         $stream->sendContent();
@@ -96,9 +94,8 @@ class ExportHelperTest extends TestCase
     {
         $stream = $this->exportHelper->exportDataAs($this->dummyData, ExportHelper::EXPORT_TYPE_EXCEL, 'demo-file.xlsx');
 
-        $this->assertInstanceOf(StreamedResponse::class, $stream);
         $this->assertSame(200, $stream->getStatusCode());
-        $this->assertSame(false, $stream->isEmpty());
+        $this->assertFalse($stream->isEmpty());
 
         ob_start();
         $stream->sendContent();

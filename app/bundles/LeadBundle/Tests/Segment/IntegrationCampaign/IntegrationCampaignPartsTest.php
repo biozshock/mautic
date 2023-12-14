@@ -7,8 +7,8 @@ use Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts;
 class IntegrationCampaignPartsTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getIntegrationName()
-     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getCampaignId()
+     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getIntegrationName
+     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getCampaignId
      */
     public function testConnectwise()
     {
@@ -20,8 +20,8 @@ class IntegrationCampaignPartsTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getIntegrationName()
-     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getCampaignId()
+     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getIntegrationName
+     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getCampaignId
      */
     public function testSalesforceExplicit()
     {
@@ -33,8 +33,8 @@ class IntegrationCampaignPartsTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getIntegrationName()
-     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getCampaignId()
+     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getIntegrationName
+     * @covers \Mautic\LeadBundle\Segment\IntegrationCampaign\IntegrationCampaignParts::getCampaignId
      */
     public function testSalesforceDefault()
     {

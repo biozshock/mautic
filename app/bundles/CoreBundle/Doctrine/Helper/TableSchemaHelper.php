@@ -51,7 +51,7 @@ class TableSchemaHelper
     public function __construct(Connection $db, $prefix, ColumnSchemaHelper $columnHelper)
     {
         $this->db           = $db;
-        $this->sm           = $db->getSchemaManager();
+        $this->sm           = $db->createSchemaManager();
         $this->prefix       = $prefix;
         $this->columnHelper = $columnHelper;
     }

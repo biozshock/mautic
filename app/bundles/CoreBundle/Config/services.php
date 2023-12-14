@@ -18,6 +18,7 @@ return function (ContainerConfigurator $configurator) {
         'Form/EventListener/FormExitSubscriber.php',
         'Release',
         'Helper/Chart',
+        'Form/DataTransformer',
         'Helper/CommandResponse.php',
         'Helper/Language/Installer.php',
         'Helper/PageHelper.php',
