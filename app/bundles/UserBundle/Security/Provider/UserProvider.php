@@ -36,6 +36,11 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
+        return $this->loadUserByIdentifier($username);
+    }
+
+    public function loadUserByIdentifier(string $identifier): User
+    {
         $q = $this->userRepository
             ->createQueryBuilder('u')
             ->select('u, r')
@@ -43,14 +48,14 @@ class UserProvider implements UserProviderInterface
             ->where('u.username = :username OR u.email = :username')
             ->andWhere('u.isPublished = :true')
             ->setParameter('true', true, 'boolean')
-            ->setParameter('username', $username);
+            ->setParameter('username', $identifier);
 
         $user = $q->getQuery()->getOneOrNullResult();
 
         if (empty($user)) {
             $message = sprintf(
                 'Unable to find an active admin MauticUserBundle:User object identified by "%s".',
-                $username
+                $identifier
             );
             throw new UserNotFoundException($message, 0);
         }
@@ -71,7 +76,7 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        return $this->loadUserByIdentifier($user->getUserIdentifier());
     }
 
     public function supportsClass(string $class): bool
@@ -104,7 +109,7 @@ class UserProvider implements UserProviderInterface
             throw new AuthenticationException('mautic.integration.sso.error.no_role');
         }
 
-        if (!$user->getUsername()) {
+        if (!$user->getUserIdentifier()) {
             throw new AuthenticationException('mautic.integration.sso.error.no_username');
         }
 
@@ -152,13 +157,13 @@ class UserProvider implements UserProviderInterface
     {
         try {
             // Try by username
-            $user = $this->loadUserByUsername($user->getUsername());
+            $user = $this->loadUserByIdentifier($user->getUserIdentifier());
 
             return $user;
         } catch (UserNotFoundException) {
             // Try by email
             try {
-                return $this->loadUserByUsername($user->getEmail());
+                return $this->loadUserByIdentifier($user->getEmail());
             } catch (UserNotFoundException) {
             }
         }

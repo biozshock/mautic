@@ -43,6 +43,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class LeadController extends FormController
 {
@@ -229,7 +230,7 @@ class LeadController extends FormController
         );
     }
 
-    public function quickAddAction(Request $request): Response
+    public function quickAddAction(Request $request, TokenStorageInterface $tokenStorage): Response
     {
         /** @var \Mautic\LeadBundle\Model\LeadModel $model */
         $model = $this->getModel('lead.lead');
@@ -265,7 +266,7 @@ class LeadController extends FormController
         $quickForm = $model->createForm($model->getEntity(), $this->formFactory, $action, ['fields' => $fields, 'isShortForm' => true]);
 
         // set the default owner to the currently logged in user
-        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+        $currentUser = $tokenStorage->getToken()->getUser();
         $quickForm->get('owner')->setData($currentUser);
 
         if ($request->isMethod(Request::METHOD_POST)) {
@@ -438,7 +439,7 @@ class LeadController extends FormController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function newAction(Request $request, UserHelper $userHelper, AvatarHelper $avatarHelper)
+    public function newAction(Request $request, UserHelper $userHelper, AvatarHelper $avatarHelper, TokenStorageInterface $tokenStorage)
     {
         /** @var LeadModel $model */
         $model = $this->getModel('lead.lead');
@@ -544,7 +545,7 @@ class LeadController extends FormController
                     }
                 } else {
                     if ($request->get('qf', false)) {
-                        return $this->quickAddAction($request);
+                        return $this->quickAddAction($request, $tokenStorage);
                     }
 
                     $formErrors = $this->getFormErrorMessages($form);
@@ -576,7 +577,7 @@ class LeadController extends FormController
             }
         } else {
             // set the default owner to the currently logged in user
-            $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+            $currentUser = $tokenStorage->getToken()->getUser();
             $form->get('owner')->setData($currentUser);
         }
 

@@ -11,9 +11,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class TransportChainTest extends MauticMysqlTestCase
 {
-    /**
-     * @var TransportChain|MockObject
-     */
     private \Mautic\SmsBundle\Sms\TransportChain $transportChain;
 
     /**
@@ -47,7 +44,7 @@ class TransportChainTest extends MauticMysqlTestCase
 
         $this->transportChain = new TransportChain(
             'mautic.test.twilio.mock',
-            self::$container->get('mautic.helper.integration')
+            static::getContainer()->get('mautic.helper.integration')
         );
 
         $this->twilioTransport = $this->createMock(TwilioTransport::class);
@@ -61,7 +58,7 @@ class TransportChainTest extends MauticMysqlTestCase
     {
         $count = count($this->transportChain->getTransports());
 
-        $this->transportChain->addTransport('mautic.transport.test', self::$container->get('mautic.sms.twilio.transport'), 'mautic.transport.test', 'Twilio');
+        $this->transportChain->addTransport('mautic.transport.test', self::getContainer()->get('mautic.sms.twilio.transport'), 'mautic.transport.test', 'Twilio');
 
         $this->assertCount($count + 1, $this->transportChain->getTransports());
     }

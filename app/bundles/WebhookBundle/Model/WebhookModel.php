@@ -457,35 +457,33 @@ class WebhookModel extends FormModel
         if (self::COMMAND_PROCESS === $this->queueMode) {
             $queuesArray = $this->getWebhookQueues($webhook);
         } else {
-            $queuesArray = [isset($queue) ? [$queue] : []];
+            $queuesArray = null !== $queue ? [$queue] : [];
         }
 
-        /* @var WebhookQueue $queue */
-        foreach ($queuesArray as $queues) {
-            foreach ($queues as $queue) {
-                /** @var \Mautic\WebhookBundle\Entity\Event $event */
-                $event = $queue->getEvent();
-                $type  = $event->getEventType();
+        /* @var WebhookQueue $queueItem */
+        foreach ($queuesArray as $queueItem) {
+            /** @var \Mautic\WebhookBundle\Entity\Event $event */
+            $event = $queueItem->getEvent();
+            $type  = $event->getEventType();
 
-                // create new array level for each unique event type
-                if (!isset($payload[$type])) {
-                    $payload[$type] = [];
-                }
+            // create new array level for each unique event type
+            if (!isset($payload[$type])) {
+                $payload[$type] = [];
+            }
 
-                $queuePayload              = json_decode($queue->getPayload(), true);
-                $queuePayload['timestamp'] = $queue->getDateAdded()->format('c');
+            $queuePayload              = json_decode($queueItem->getPayload(), true);
+            $queuePayload['timestamp'] = $queueItem->getDateAdded()->format('c');
 
-                // its important to decode the payload form the DB as we re-encode it with the
-                $payload[$type][] = $queuePayload;
+            // its important to decode the payload form the DB as we re-encode it with the
+            $payload[$type][] = $queuePayload;
 
-                // Add to the webhookQueueIdList only if ID exists.
-                // That means if it was stored to DB and not sent via immediate send.
-                if ($queue->getId()) {
-                    $this->webhookQueueIdList[$queue->getId()] = $queue;
+            // Add to the webhookQueueIdList only if ID exists.
+            // That means if it was stored to DB and not sent via immediate send.
+            if ($queueItem->getId()) {
+                $this->webhookQueueIdList[$queueItem->getId()] = $queueItem;
 
-                    // Clear the WebhookQueue entity from memory
-                    $this->em->detach($queue);
-                }
+                // Clear the WebhookQueue entity from memory
+                $this->em->detach($queueItem);
             }
         }
 
@@ -495,7 +493,7 @@ class WebhookModel extends FormModel
     /**
      * Get the queues and order by date so we get events.
      *
-     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     * @return iterable<object>
      */
     public function getWebhookQueues(Webhook $webhook)
     {
@@ -504,7 +502,7 @@ class WebhookModel extends FormModel
 
         return $queueRepo->getEntities(
             [
-                'iterator_mode' => true,
+                'iterable_mode' => true,
                 'start'         => 0,
                 'limit'         => $this->webhookLimit,
                 'orderBy'       => $queueRepo->getTableAlias().'.dateAdded',

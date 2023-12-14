@@ -2,26 +2,43 @@
 
 namespace Mautic\CoreBundle\Form\DataTransformer;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * @implements DataTransformerInterface<array<mixed>|int|string, array<mixed>|int|string>
+ */
 class IdToEntityModelTransformer implements DataTransformerInterface
 {
+    private EntityManagerInterface $em;
+
     /**
-     * @param string $repository
-     * @param string $id
-     * @param bool   $isArray
+     * @var class-string
      */
-    public function __construct(
-        private EntityManager $em,
-        private $repository = '',
-        private $id = 'id',
-        private $isArray = false
-    ) {
+    private string $repository;
+
+    private string $id;
+
+    private bool $isArray;
+
+    /**
+     * @param class-string $repo
+     */
+    public function __construct(EntityManagerInterface $em, string $repo, string $identifier = 'id', bool $isArray = false)
+    {
+        $this->em         = $em;
+        $this->repository = $repo;
+        $this->id         = $identifier;
+        $this->isArray    = $isArray;
     }
 
+    /**
+     * @param array<mixed>|object|null $entity
+     *
+     * @return array<mixed>|int|string
+     */
     public function transform($entity)
     {
         $func = 'get'.ucfirst($this->id);
@@ -47,7 +64,9 @@ class IdToEntityModelTransformer implements DataTransformerInterface
     }
 
     /**
-     * @throws TransformationFailedException if object is not found
+     * @param array<mixed>|int|string $id
+     *
+     * @return array<mixed>|object|null
      */
     public function reverseTransform($id)
     {

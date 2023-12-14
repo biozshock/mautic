@@ -3,6 +3,7 @@
 namespace MauticPlugin\MauticSocialBundle\Entity;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Mautic\CoreBundle\Doctrine\Paginator\SimplePaginator;
 use Mautic\CoreBundle\Entity\CommonRepository;
 
 /**
@@ -36,7 +37,13 @@ class MonitoringRepository extends CommonRepository
         $q->where($expr);
         $args['qb'] = $q;
 
-        return parent::getEntities($args)->count();
+        $entities = parent::getEntities($args);
+
+        if (!$entities instanceof SimplePaginator) {
+            throw new \RuntimeException('Entities must be a SimplePaginator class.');
+        }
+
+        return $entities->count();
     }
 
     /**

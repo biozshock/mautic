@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mautic\IntegrationsBundle\Tests\Unit\EventListener;
 
+use Mautic\IntegrationsBundle\Entity\ObjectMapping;
 use Mautic\IntegrationsBundle\Event\InternalObjectCreateEvent;
 use Mautic\IntegrationsBundle\Event\InternalObjectEvent;
 use Mautic\IntegrationsBundle\Event\InternalObjectFindByIdEvent;
@@ -100,14 +101,15 @@ class ContactObjectSubscriberTest extends TestCase
 
         $event = new InternalObjectUpdateEvent(new Contact(), [123], [$objectChangeDAO]);
 
+        $objectMapping = $this->createMock(ObjectChangeDAO::class);
         $this->contactObjectHelper->expects($this->once())
             ->method('update')
             ->with([123], [$objectChangeDAO])
-            ->willReturn([['object_mapping_1']]);
+            ->willReturn([$objectMapping]);
 
         $this->subscriber->updateContacts($event);
 
-        $this->assertSame([['object_mapping_1']], $event->getUpdatedObjectMappings());
+        $this->assertSame([$objectMapping], $event->getUpdatedObjectMappings());
     }
 
     public function testCreateContactsWithWrongObject(): void
@@ -126,14 +128,15 @@ class ContactObjectSubscriberTest extends TestCase
     {
         $event = new InternalObjectCreateEvent(new Contact(), [['somefield' => 'somevalue']]);
 
+        $objectMapping = $this->createMock(ObjectMapping::class);
         $this->contactObjectHelper->expects($this->once())
             ->method('create')
             ->with([['somefield' => 'somevalue']])
-            ->willReturn([['object_mapping_1']]);
+            ->willReturn([$objectMapping]);
 
         $this->subscriber->createContacts($event);
 
-        $this->assertSame([['object_mapping_1']], $event->getObjectMappings());
+        $this->assertSame([$objectMapping], $event->getObjectMappings());
     }
 
     public function testFindContactsByIdsWithWrongObject(): void

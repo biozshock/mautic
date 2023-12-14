@@ -12,20 +12,20 @@ class CategoryMapperTest extends \PHPUnit\Framework\TestCase
     /**
      * @testdox Test that the Category object is returned
      *
-     * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Mapper\CategoryMapper::map()
+     * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Mapper\CategoryMapper::map
      * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Definition\Category
      */
     public function testCategoryIsMapped(): void
     {
         $category = CategoryMapper::map(Definition::ANTISPAM);
 
-        $this->assertInstanceOf(Category::class, $category);
+        $this->assertSame(Definition::ANTISPAM, $category->getCategory());
     }
 
     /**
      * @testdox Test that exception is thrown if a category is not found
      *
-     * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Mapper\CategoryMapper::map()
+     * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Mapper\CategoryMapper::map
      */
     public function testExceptionIsThrownWithUnrecognizedCategory(): void
     {

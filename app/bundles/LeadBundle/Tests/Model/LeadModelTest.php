@@ -90,9 +90,6 @@ class LeadModelTest extends \PHPUnit\Framework\TestCase
      */
     private \PHPUnit\Framework\MockObject\MockObject $categoryModelMock;
 
-    /**
-     * @var ChannelListHelper
-     */
     private \Mautic\ChannelBundle\Helper\ChannelListHelper $channelListHelperMock;
 
     /**

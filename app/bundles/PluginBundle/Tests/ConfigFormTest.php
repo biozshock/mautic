@@ -10,7 +10,6 @@ use Mautic\PluginBundle\Entity\IntegrationEntityRepository;
 use Mautic\PluginBundle\Entity\IntegrationRepository;
 use Mautic\PluginBundle\Entity\PluginRepository;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
-use Mautic\PluginBundle\Integration\AbstractIntegration;
 use Mautic\PluginBundle\Model\PluginModel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
@@ -44,7 +43,7 @@ class ConfigFormTest extends KernelTestCase
         $parameters = ['a' => 'testa', 'b' => 'testb'];
         $method     = 'GET';
         $authType   = 'oauth2';
-        $expected   = [
+        $expectedT  = [
             [
               'a' => 'testa',
               'b' => 'testb',
@@ -55,10 +54,37 @@ class ConfigFormTest extends KernelTestCase
             ],
         ];
 
-        /** @var AbstractIntegration $integration */
-        foreach ($plugins as $integration) {
-            $this->assertSame($expected, $integration->prepareRequest($url, $parameters, $method, [], $authType));
+        $expected                = [];
+        $expected['Connectwise'] = $this->getOauthData('');
+        $expected['OneSignal']   = $this->getOauthData('');
+        $expected['Twilio']      = $this->getOauthData('');
+        $expected['Vtiger']      = $this->getOauthData('sessionName');
+        $expected['Dynamics']    = $this->getOauthData('access_token');
+        $expected['Salesforce']  = $this->getOauthData('access_token');
+        $expected['Sugarcrm']    = $this->getOauthData('access_token');
+        $expected['Zoho']        = $this->getOauthData('access_token');
+        $expected['Hubspot']     = $this->getOauthData('hapikey');
+
+        foreach ($plugins as $index => $integration) {
+            $this->assertSame($expected[$index], $integration->prepareRequest($url, $parameters, $method, [], $authType));
         }
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function getOauthData(string $key): array
+    {
+        return [
+            [
+                'a'   => 'testa',
+                'b'   => 'testb',
+                $key  => '',
+            ], [
+                'oauth-token: '.$key,
+                'Authorization: OAuth ',
+            ],
+        ];
     }
 
     public function testAmendLeadDataBeforeMauticPopulate(): void
@@ -67,14 +93,11 @@ class ConfigFormTest extends KernelTestCase
         $object  = 'company';
         $data    = ['company_name' => 'company_name', 'email' => 'company_email'];
 
-        /** @var AbstractIntegration $integration */
         foreach ($plugins as $integration) {
             $methodExists = method_exists($integration, 'amendLeadDataBeforeMauticPopulate');
             if ($methodExists) {
                 $count = $integration->amendLeadDataBeforeMauticPopulate($data, $object);
                 $this->assertGreaterThanOrEqual(0, $count);
-            } else {
-                $this->assertFalse($methodExists, 'To make this test avoid the risky waring...');
             }
         }
     }
@@ -97,11 +120,11 @@ class ConfigFormTest extends KernelTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $registeredPluginBundles = self::$container->getParameter('mautic.plugin.bundles');
-        $mauticPlugins           = self::$container->getParameter('mautic.bundles');
-        $bundleHelper->expects($this->any())->method('getPluginBundles')->willReturn([$registeredPluginBundles]);
+        $registeredPluginBundles = self::getContainer()->getParameter('mautic.plugin.bundles');
+        $mauticPlugins           = self::getContainer()->getParameter('mautic.bundles');
+        $bundleHelper->method('getPluginBundles')->willReturn($registeredPluginBundles);
 
-        $bundleHelper->expects($this->any())->method('getMauticBundles')->willReturn(array_merge($mauticPlugins, $registeredPluginBundles));
+        $bundleHelper->method('getMauticBundles')->willReturn(array_merge($mauticPlugins, $registeredPluginBundles));
         $integrationEntityRepository = $this
             ->getMockBuilder(IntegrationEntityRepository::class)
             ->disableOriginalConstructor()
@@ -112,21 +135,28 @@ class ConfigFormTest extends KernelTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $entityManager->expects($this
-            ->any())
+        $entityManager
                 ->method('getRepository')
-                ->will(
-                    $this->returnValueMap(
-                        [
-                            [\Mautic\PluginBundle\Entity\Plugin::class, $pluginRepository],
-                            [\Mautic\PluginBundle\Entity\Integration::class, $integrationRepository],
-                            [\Mautic\PluginBundle\Entity\IntegrationEntity::class, $integrationEntityRepository],
-                        ]
-                    )
+                ->willReturnMap(
+                    [
+                        [\Mautic\PluginBundle\Entity\Plugin::class, $pluginRepository],
+                        [\Mautic\PluginBundle\Entity\Integration::class, $integrationRepository],
+                        [\Mautic\PluginBundle\Entity\IntegrationEntity::class, $integrationEntityRepository],
+                    ]
                 );
 
+        $pluginModel->method('getEntities')
+            ->with(
+                [
+                    'hydration_mode' => 'hydrate_array',
+                    'index'          => 'bundle',
+                ]
+            )->willReturn([
+                'MauticCrmBundle' => ['id' => 1],
+            ]);
+
         $integrationHelper = new IntegrationHelper(
-            self::$kernel->getContainer(),
+            self::getContainer(),
             $entityManager,
             $pathsHelper,
             $bundleHelper,

@@ -322,6 +322,11 @@ class User extends FormEntity implements UserInterface, EquatableInterface, Pass
         return $this->username;
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
     public function getSalt()
     {
         // bcrypt generates its own salt

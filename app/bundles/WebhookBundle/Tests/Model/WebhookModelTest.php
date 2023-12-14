@@ -158,7 +158,7 @@ class WebhookModelTest extends TestCase
 
         $queueRepositoryMock->expects($this->once())
             ->method('getEntities')
-            ->willReturn([[$queueMock]]);
+            ->willReturn([$queueMock]);
 
         $expectedPayload = [
             'leads' => [

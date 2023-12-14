@@ -9,6 +9,9 @@ use Mautic\LeadBundle\Entity\LeadListRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @implements DataTransformerInterface<mixed, array<mixed>|mixed>
+ */
 class FieldFilterTransformer implements DataTransformerInterface
 {
     /**
@@ -75,7 +78,7 @@ class FieldFilterTransformer implements DataTransformerInterface
         $rawFilters = array_values($rawFilters);
 
         foreach ($rawFilters as $k => $f) {
-            if ('datetime' == $f['type']) {
+            if ('datetime' === $f['type']) {
                 $bcFilter = $f['filter'] ?? '';
                 $filter   = $f['properties']['filter'] ?? $bcFilter;
                 if (empty($filter) || in_array($filter, $this->relativeDateStrings) || stristr($filter[0], '-') || stristr($filter[0], '+')) {

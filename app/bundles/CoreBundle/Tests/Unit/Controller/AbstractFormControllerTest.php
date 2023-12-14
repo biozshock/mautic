@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class AbstractFormControllerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var AbstractFormController
-     */
     private \Mautic\CoreBundle\Controller\AbstractFormController $classFromAbstractFormController;
 
     /**

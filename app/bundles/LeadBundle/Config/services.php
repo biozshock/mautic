@@ -34,7 +34,7 @@ return function (ContainerConfigurator $configurator): void {
     $services->get(\Mautic\LeadBundle\Entity\CompanyRepository::class)
         ->call('setUniqueIdentifiersOperator', ['%mautic.company_unique_identifiers_operator%']);
     $services->get(\Mautic\LeadBundle\Entity\LeadRepository::class)
-        ->call('setUniqueIdentifiersOperator', ['%mautic.company_unique_identifiers_operator%'])
+        ->call('setUniqueIdentifiersOperator', ['%mautic.contact_unique_identifiers_operator%'])
         ->call('setListLeadRepository', [\Symfony\Component\DependencyInjection\Loader\Configurator\service('mautic.lead.repository.list_lead')]);
 
     $services->alias('mautic.lead.model.field', \Mautic\LeadBundle\Model\FieldModel::class);

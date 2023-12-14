@@ -66,7 +66,7 @@ class CrmAbstractIntegrationTest extends AbstractIntegrationTestCase
         $companyDeduper = $this->createMock(CompanyDeduper::class);
 
         $companyModel = $this->getMockBuilder(CompanyModelStub::class)
-            ->setMethodsExcept(['setFieldValues', 'setFieldModel', 'setEmailValidator', 'setCompanyDeduper'])
+            ->onlyMethods(['fetchCompanyFields', 'organizeFieldsByGroup', 'saveEntity'])
             ->disableOriginalConstructor()
             ->getMock();
         $companyModel->setFieldModel($this->fieldModel);
@@ -113,8 +113,9 @@ class CrmAbstractIntegrationTest extends AbstractIntegrationTestCase
                 $this->fieldModel,
                 $this->integrationEntityModel,
                 $this->doNotContact,
+                $this->fieldsWithUniqueIdentifier,
             ])
-            ->setMethodsExcept(['getMauticCompany', 'setCompanyModel', 'setFieldModel', 'hydrateCompanyName'])
+            ->onlyMethods(['populateMauticLeadData', 'mergeConfigToFeatureSettings'])
             ->getMock();
 
         $integration->expects($this->once())
@@ -132,7 +133,6 @@ class CrmAbstractIntegrationTest extends AbstractIntegrationTestCase
     {
         $integration = $this->getMockBuilder(StubIntegration::class)
             ->disableOriginalConstructor()
-            ->setMethodsExcept(['limitString'])
             ->getMock();
 
         $methodLimitString = new \ReflectionMethod(StubIntegration::class, 'limitString');

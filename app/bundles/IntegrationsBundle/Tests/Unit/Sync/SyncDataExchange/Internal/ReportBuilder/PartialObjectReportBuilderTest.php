@@ -60,14 +60,26 @@ class PartialObjectReportBuilderTest extends TestCase
     protected function setUp(): void
     {
         $this->fieldChangeRepository = $this->createMock(FieldChangeRepository::class);
-        $this->fieldHelper           = $this->getMockBuilder(FieldHelper::class)
+
+        $fieldHelperReflection = new \ReflectionClass(FieldHelper::class);
+
+        $methods = array_map(static function (\ReflectionMethod $m): string {
+            return $m->name;
+        }, $fieldHelperReflection->getMethods());
+
+        $methodsToMock = array_diff(
+            $methods,
+            ['getNormalizedFieldType']
+        );
+
+        $this->fieldHelper = $this->getMockBuilder(FieldHelper::class)
             ->disableOriginalConstructor()
-            ->setMethodsExcept(['getNormalizedFieldType'])
+            ->onlyMethods($methodsToMock)
             ->getMock();
-        $this->dispatcher            = $this->createMock(EventDispatcherInterface::class);
-        $this->fieldBuilder          = $this->createMock(FieldBuilder::class);
-        $this->objectProvider        = $this->createMock(ObjectProvider::class);
-        $this->reportBuilder         = new PartialObjectReportBuilder(
+        $this->dispatcher     = $this->createMock(EventDispatcherInterface::class);
+        $this->fieldBuilder   = $this->createMock(FieldBuilder::class);
+        $this->objectProvider = $this->createMock(ObjectProvider::class);
+        $this->reportBuilder  = new PartialObjectReportBuilder(
             $this->fieldChangeRepository,
             $this->fieldHelper,
             $this->fieldBuilder,
