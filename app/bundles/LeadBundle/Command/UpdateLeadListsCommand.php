@@ -97,7 +97,6 @@ class UpdateLeadListsCommand extends ModeratedCommand
             );
 
             foreach ($leadLists as $leadList) {
-                /** @var LeadList $leadList */
                 $startTimeForSingleSegment = time();
                 $this->rebuildSegment($leadList, $batch, $max, $output);
                 if ($enableTimeMeasurement) {

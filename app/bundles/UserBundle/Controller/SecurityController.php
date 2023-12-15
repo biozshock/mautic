@@ -27,11 +27,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends CommonController implements EventSubscriberInterface
 {
-    private AuthorizationCheckerInterface $authChecker;
-
-    public function __construct(ManagerRegistry $doctrine, MauticFactory $factory, ModelFactory $modelFactory, UserHelper $userHelper, CoreParametersHelper $coreParametersHelper, EventDispatcherInterface $dispatcher, Translator $translator, FlashBag $flashBag, RequestStack $requestStack, CorePermissions $security, AuthorizationCheckerInterface $authChecker)
+    public function __construct(ManagerRegistry $doctrine, MauticFactory $factory, ModelFactory $modelFactory, UserHelper $userHelper, CoreParametersHelper $coreParametersHelper, EventDispatcherInterface $dispatcher, Translator $translator, FlashBag $flashBag, RequestStack $requestStack, CorePermissions $security, private AuthorizationCheckerInterface $authChecker)
     {
-        $this->authChecker = $authChecker;
         parent::__construct($doctrine, $factory, $modelFactory, $userHelper, $coreParametersHelper, $dispatcher, $translator, $flashBag, $requestStack, $security);
     }
 

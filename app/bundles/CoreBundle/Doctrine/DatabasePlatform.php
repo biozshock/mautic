@@ -41,6 +41,6 @@ class DatabasePlatform
             return 'sqlite';
         }
 
-        throw new \RuntimeException('Unknown platform '.get_class($platform));
+        throw new \RuntimeException('Unknown platform '.$platform::class);
     }
 }

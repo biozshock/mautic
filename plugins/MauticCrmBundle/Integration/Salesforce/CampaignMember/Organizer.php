@@ -50,7 +50,7 @@ class Organizer
     /**
      * @return array<int, int>
      */
-    public function getContactIds()
+    public function getContactIds(): array
     {
         return array_keys($this->contacts);
     }

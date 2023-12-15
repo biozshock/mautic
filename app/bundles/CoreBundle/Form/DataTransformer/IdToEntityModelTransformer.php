@@ -12,26 +12,11 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class IdToEntityModelTransformer implements DataTransformerInterface
 {
-    private EntityManagerInterface $em;
-
     /**
-     * @var class-string
+     * @param class-string $repository
      */
-    private string $repository;
-
-    private string $id;
-
-    private bool $isArray;
-
-    /**
-     * @param class-string $repo
-     */
-    public function __construct(EntityManagerInterface $em, string $repo, string $identifier = 'id', bool $isArray = false)
+    public function __construct(private EntityManagerInterface $em, private string $repository, private string $id = 'id', private bool $isArray = false)
     {
-        $this->em         = $em;
-        $this->repository = $repo;
-        $this->id         = $identifier;
-        $this->isArray    = $isArray;
     }
 
     /**

@@ -24,10 +24,7 @@ class BouncedEmail
      */
     private $bounceType;
 
-    /**
-     * @var bool
-     */
-    private $final = false;
+    private bool $final = false;
 
     /**
      * @var string|null
