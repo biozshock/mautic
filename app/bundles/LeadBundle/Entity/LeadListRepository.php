@@ -2,6 +2,7 @@
 
 namespace Mautic\LeadBundle\Entity;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Mautic\CoreBundle\Entity\CommonRepository;
 use Mautic\UserBundle\Entity\User;
@@ -205,7 +206,7 @@ class LeadListRepository extends CommonRepository
                 )
             )
             ->setParameter('leadId', $lead->getId())
-            ->setParameter('ids', $ids, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
+            ->setParameter('ids', $ids, ArrayParameterType::INTEGER);
 
         return (bool) $qb->executeQuery()->fetchOne();
     }
@@ -287,7 +288,7 @@ class LeadListRepository extends CommonRepository
 
         $return = [];
         foreach ($result as $r) {
-            $return[$r['leadlist_id']] = $r['thecount'];
+            $return[$r['leadlist_id']] = (int) $r['thecount'];
         }
 
         // Ensure lists without leads have a value
@@ -364,7 +365,7 @@ class LeadListRepository extends CommonRepository
             if (is_array($value)) {
                 $subFunc                        = 'in';
                 $subExpr[]                      = $subQb->expr()->in(sprintf('%s.%s', $alias, $column), ":$subFilterParamter");
-                $parameters[$subFilterParamter] = ['value' => $value, 'type' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY];
+                $parameters[$subFilterParamter] = ['value' => $value, 'type' => ArrayParameterType::STRING];
             } else {
                 $parameters[$subFilterParamter] = $value;
             }

@@ -41,7 +41,11 @@ class CampaignControllerFunctionalTest extends AbstractCampaignTest
         $this->configParams[self::CAMPAIGN_SUMMARY_PARAM] = in_array($this->getName(), $functionForUseSummary);
         $this->configParams[self::CAMPAIGN_RANGE_PARAM]   = in_array($this->getName(), $functionForUseRange);
         parent::setUp();
-        $this->campaignModel      = self::$container->get('mautic.model.factory')->getModel('campaign');
+
+        $model = self::$container->get('mautic.model.factory')->getModel('campaign');
+        \assert($model instanceof CampaignModel);
+
+        $this->campaignModel      = $model;
         $this->campaignLeadsLabel = self::$container->get('translator')->trans('mautic.campaign.campaign.leads');
     }
 
@@ -235,7 +239,7 @@ class CampaignControllerFunctionalTest extends AbstractCampaignTest
         $campaignId = $campaign->getId();
 
         if ($runCommand) {
-            $this->runCommand(
+            $this->testSymfonyCommand(
                 SummarizeCommand::NAME,
                 [
                     '--env'       => 'test',

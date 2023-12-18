@@ -5,6 +5,7 @@ namespace Mautic\CoreBundle\Test;
 use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Mautic\EmailBundle\Mailer\Message\MauticMessage;
@@ -102,10 +103,11 @@ abstract class AbstractMauticTestCase extends WebTestCase
         $this->client->disableReboot();
         $this->client->followRedirects(true);
 
-        $this->em         = self::$container->get('doctrine')->getManager();
+        $this->em = self::getContainer()->get('doctrine')->getManager();
+        \assert($this->em instanceof EntityManagerInterface);
         $this->connection = $this->em->getConnection();
 
-        $this->router = self::$container->get('router');
+        $this->router = self::getContainer()->get('router');
         $scheme       = $this->router->getContext()->getScheme();
         $secure       = 0 === strcasecmp($scheme, 'https');
 
@@ -231,7 +233,7 @@ abstract class AbstractMauticTestCase extends WebTestCase
      */
     protected function testSymfonyCommand(string $name, array $params = [], Command $command = null): CommandTester
     {
-        $kernel      = self::$container->get('kernel');
+        $kernel      = self::getContainer()->get('kernel');
         $application = new Application($kernel);
 
         if ($command) {

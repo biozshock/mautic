@@ -11,7 +11,7 @@ class ParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @testdox Test that a bounce is found through DsnReport
      *
-     * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Parser::parse()
+     * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Parser::parse
      */
     public function testBouncedEmailIsReturnedFromParsedDsnReport(): void
     {
@@ -27,13 +27,13 @@ DSN;
         $parser = new Parser($message);
         $bounce = $parser->parse();
 
-        $this->assertInstanceOf(BouncedEmail::class, $bounce);
+        $this->assertSame('sdfgsdfg@seznan.cz', $bounce->getContactEmail());
     }
 
     /**
      * @testdox Test that a bounce is found through body
      *
-     * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Parser::parse()
+     * @covers  \Mautic\EmailBundle\MonitoredEmail\Processor\Bounce\Parser::parse
      */
     public function testBouncedEmailIsReturnedFromParsedBody(): void
     {
@@ -59,6 +59,6 @@ BODY;
         $parser = new Parser($message);
         $bounce = $parser->parse();
 
-        $this->assertInstanceOf(BouncedEmail::class, $bounce);
+        $this->assertSame('recipient@example.net', $bounce->getContactEmail());
     }
 }

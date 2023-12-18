@@ -14,11 +14,11 @@ final class ContactMergerFunctionalTest extends MauticMysqlTestCase
 {
     public function testMergedContactFound(): void
     {
-        $model = self::$container->get('mautic.lead.model.lead');
-        \assert($model instanceof LeadModel);
+        /** @var LeadModel $model */
+        $model = self::getContainer()->get('mautic.lead.model.lead');
 
-        $merger = self::$container->get('mautic.lead.merger');
-        \assert($merger instanceof ContactMerger);
+        /** @var ContactMerger $merger */
+        $merger = self::getContainer()->get('mautic.lead.merger');
 
         $bob = new Lead();
         $bob->setFirstname('Bob')
@@ -68,14 +68,14 @@ final class ContactMergerFunctionalTest extends MauticMysqlTestCase
 
     public function testMergedContactsPointsAreAccurate(): void
     {
-        $model = self::$container->get('mautic.lead.model.lead');
-        \assert($model instanceof LeadModel);
+        /** @var LeadModel $model */
+        $model = self::getContainer()->get('mautic.lead.model.lead');
 
-        $em = self::$container->get('doctrine.orm.entity_manager');
-        \assert($em instanceof EntityManager);
+        /** @var EntityManager $em */
+        $em = self::getContainer()->get('doctrine.orm.entity_manager');
 
-        $merger = self::$container->get('mautic.lead.merger');
-        \assert($merger instanceof ContactMerger);
+        /** @var ContactMerger $merger */
+        $merger = self::getContainer()->get('mautic.lead.merger');
 
         // Startout Jane with 50 points
         $jane = new Lead();

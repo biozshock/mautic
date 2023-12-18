@@ -19,15 +19,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class RedirectModelTest extends PageTestAbstract
 {
-    public function testCreateRedirectEntityWhenCalledReturnsRedirect(): void
-    {
-        $redirectModel = $this->getRedirectModel();
-        $entity        = $redirectModel->createRedirectEntity('http://some-url.com');
-
-        $this->assertInstanceOf(Redirect::class, $entity);
-    }
-
-    public function testGenerateRedirectUrlWhenCalledReturnsValidUrl(): void
+    public function testGenerateRedirectUrlWhenCalledReturnsValidUrl()
     {
         $redirect = new Redirect();
         $redirect->setUrl('http://some-url.com');

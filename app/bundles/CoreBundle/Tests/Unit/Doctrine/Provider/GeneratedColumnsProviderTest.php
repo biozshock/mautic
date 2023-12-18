@@ -51,7 +51,6 @@ final class GeneratedColumnsProviderTest extends \PHPUnit\Framework\TestCase
 
         $generatedColumns = $this->provider->getGeneratedColumns();
 
-        $this->assertInstanceOf(GeneratedColumnsInterface::class, $generatedColumns);
         $this->assertCount(0, $generatedColumns);
     }
 
@@ -77,7 +76,6 @@ final class GeneratedColumnsProviderTest extends \PHPUnit\Framework\TestCase
             );
 
         $generatedColumns = $this->provider->getGeneratedColumns();
-        $this->assertInstanceOf(GeneratedColumnsInterface::class, $generatedColumns);
 
         /** @var GeneratedColumn $generatedColumn */
         $generatedColumn = $generatedColumns->current();

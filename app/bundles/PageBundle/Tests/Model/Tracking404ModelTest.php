@@ -26,7 +26,7 @@ class Tracking404ModelTest extends \PHPUnit\Framework\TestCase
     private \PHPUnit\Framework\MockObject\MockObject $mockPageModel;
 
     /**
-     * @var Lead|\PHPUnit\Framework\MockObject\MockObject
+     * @var Lead
      */
     private \Mautic\LeadBundle\Entity\Lead $lead;
 

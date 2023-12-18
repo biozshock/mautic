@@ -196,9 +196,9 @@ class UserModel extends FormModel
     /**
      * Get list of entities for autopopulate fields.
      *
-     * @param string $type
-     * @param string $filter
-     * @param int    $limit
+     * @param string   $type
+     * @param string   $filter
+     * @param int $limit
      *
      * @return array
      */

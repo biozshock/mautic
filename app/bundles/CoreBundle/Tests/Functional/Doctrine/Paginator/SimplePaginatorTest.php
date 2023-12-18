@@ -24,8 +24,7 @@ class SimplePaginatorTest extends MauticMysqlTestCase
     {
         parent::setUp();
 
-        $debugDataHolder = self::$container->get('doctrine.debug_data_holder');
-        \assert($debugDataHolder instanceof DebugDataHolder);
+        $debugDataHolder = self::getContainer()->get('doctrine.debug_data_holder');
         $debugDataHolder->reset();
 
         $this->debugDataHolder = $debugDataHolder;

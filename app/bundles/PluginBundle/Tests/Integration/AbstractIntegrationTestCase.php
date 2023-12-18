@@ -7,12 +7,14 @@ use Mautic\CoreBundle\Helper\CacheStorageHelper;
 use Mautic\CoreBundle\Helper\EncryptionHelper;
 use Mautic\CoreBundle\Helper\PathsHelper;
 use Mautic\CoreBundle\Model\NotificationModel;
+use Mautic\LeadBundle\Field\FieldsWithUniqueIdentifier;
 use Mautic\LeadBundle\Model\CompanyModel;
 use Mautic\LeadBundle\Model\DoNotContact;
 use Mautic\LeadBundle\Model\FieldModel;
 use Mautic\LeadBundle\Model\LeadModel;
 use Mautic\PluginBundle\Model\IntegrationEntityModel;
 use Monolog\Logger;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -102,6 +104,11 @@ class AbstractIntegrationTestCase extends TestCase
      */
     protected $doNotContact;
 
+    /**
+     * @var MockObject&FieldsWithUniqueIdentifier
+     */
+    protected MockObject $fieldsWithUniqueIdentifier;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -122,5 +129,6 @@ class AbstractIntegrationTestCase extends TestCase
         $this->fieldModel             = $this->createMock(FieldModel::class);
         $this->integrationEntityModel = $this->createMock(IntegrationEntityModel::class);
         $this->doNotContact           = $this->createMock(DoNotContact::class);
+        $this->fieldsWithUniqueIdentifier = $this->createMock(FieldsWithUniqueIdentifier::class);
     }
 }

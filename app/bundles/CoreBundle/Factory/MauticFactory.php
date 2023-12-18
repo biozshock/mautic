@@ -7,14 +7,20 @@ use Doctrine\Persistence\ManagerRegistry;
 use Mautic\CoreBundle\Entity\IpAddress;
 use Mautic\CoreBundle\Exception\FileNotFoundException;
 use Mautic\CoreBundle\Helper\DateTimeHelper;
+use Mautic\CoreBundle\Helper\ThemeHelper;
 use Mautic\CoreBundle\Helper\UserHelper;
 use Mautic\CoreBundle\Model\AbstractCommonModel;
 use Mautic\CoreBundle\Security\Permissions\CorePermissions;
 use Mautic\CoreBundle\Translation\Translator;
+use Mautic\CoreBundle\Twig\Helper\SlotsHelper;
 use Mautic\EmailBundle\Helper\MailHelper;
+use Mautic\EmailBundle\MonitoredEmail\Mailbox;
+use Mautic\PluginBundle\Helper\IntegrationHelper;
 use Mautic\UserBundle\Entity\User;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -35,7 +41,12 @@ class MauticFactory
         private UserHelper $userHelper,
         private RequestStack $requestStack,
         private ManagerRegistry $doctrine,
-        private Translator $translator
+        private Translator $translator,
+        private Mailbox $mailbox,
+        private ThemeHelper $themeHelper,
+        private IntegrationHelper $integrationHelper,
+        private SlotsHelper $slotsHelper,
+        private LoggerInterface $logger
     ) {
     }
 
@@ -134,12 +145,7 @@ class MauticFactory
         return $this->container->get('twig');
     }
 
-    /**
-     * Retrieves event dispatcher.
-     *
-     * @return \Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
-     */
-    public function getDispatcher()
+    public function getDispatcher(): EventDispatcherInterface
     {
         return $this->container->get('event_dispatcher');
     }
@@ -323,15 +329,17 @@ class MauticFactory
      *
      * @param bool|false $system
      *
-     * @return \Monolog\Logger
+     * @return LoggerInterface
      */
     public function getLogger($system = false)
     {
         if ($system) {
-            return $this->container->get('logger');
-        } else {
-            return $this->container->get('monolog.logger.mautic');
+            return $this->logger;
         }
+
+        $logger = $this->container->get('monolog.logger.mautic');
+
+        return $logger;
     }
 
     /**
@@ -341,14 +349,20 @@ class MauticFactory
      */
     public function getHelper($helper)
     {
-        return match ($helper) {
-            'template.assets'     => $this->container->get('twig.helper.assets'),
-            'template.slots'      => $this->container->get('twig.helper.slots'),
-            'template.form'       => $this->container->get('twig.helper.form'),
-            'template.translator' => $this->container->get('twig.helper.translator'),
-            'template.router'     => $this->container->get('twig.helper.router'),
-            default               => $this->container->get('mautic.helper.'.$helper),
-        };
+        switch ($helper) {
+            case 'mailbox':
+                return $this->mailbox;
+            case 'theme':
+                return $this->themeHelper;
+            case 'integration':
+                return $this->integrationHelper;
+            case 'template.slots':
+                return $this->slotsHelper;
+            default:
+                @trigger_error('MauticFactory::getHelper with "'.$helper.'" is deprecated.', E_USER_DEPRECATED);
+
+                return $this->container->get('mautic.helper.'.$helper);
+        }
     }
 
     /**

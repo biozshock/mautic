@@ -88,9 +88,8 @@ class ExportHelperTest extends TestCase
     {
         $stream = $this->exportHelper->exportDataAs($this->dummyData, ExportHelper::EXPORT_TYPE_CSV, 'demo-file.csv');
 
-        $this->assertInstanceOf(StreamedResponse::class, $stream);
         $this->assertSame(200, $stream->getStatusCode());
-        $this->assertSame(false, $stream->isEmpty());
+        $this->assertFalse($stream->isEmpty());
 
         ob_start();
         $stream->sendContent();
@@ -111,9 +110,8 @@ class ExportHelperTest extends TestCase
     {
         $stream = $this->exportHelper->exportDataAs($this->dummyData, ExportHelper::EXPORT_TYPE_EXCEL, 'demo-file.xlsx');
 
-        $this->assertInstanceOf(StreamedResponse::class, $stream);
         $this->assertSame(200, $stream->getStatusCode());
-        $this->assertSame(false, $stream->isEmpty());
+        $this->assertFalse($stream->isEmpty());
 
         ob_start();
         $stream->sendContent();

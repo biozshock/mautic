@@ -31,9 +31,9 @@ final class MauticReportBuilderTest extends TestCase
     private \PHPUnit\Framework\MockObject\MockObject $connection;
 
     /**
-     * @var MockObject|ChannelListHelper
+     * @var ChannelListHelper
      */
-    private \Mautic\ChannelBundle\Helper\ChannelListHelper $channelListHelper;
+    private $channelListHelper;
 
     protected function setUp(): void
     {
