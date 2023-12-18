@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mautic\IntegrationsBundle\Entity;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Mautic\CoreBundle\Entity\CommonRepository;
@@ -150,7 +151,7 @@ class ObjectMappingRepository extends CommonRepository
             ->setParameter('objectName', $objectName);
 
         if (is_array($objectIds)) {
-            $qb->setParameter('objectId', $objectIds, Connection::PARAM_STR_ARRAY);
+            $qb->setParameter('objectId', $objectIds, ArrayParameterType::STRING);
             $qb->andWhere($qb->expr()->in('m.integration_object_id', ':objectId'));
         } else {
             $qb->setParameter('objectId', $objectIds);

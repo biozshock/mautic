@@ -186,7 +186,7 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
         $integration = $this->createMock(SalesforceIntegration::class);
         $message     = 'Fatal error';
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('makeRequest')
             ->willReturn(
                 [
@@ -215,10 +215,10 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
     {
         $integration = $this->getMockBuilder(SalesforceIntegration::class)
             ->disableOriginalConstructor()
-            ->setMethodsExcept(['cleanPushData'])
+            ->onlyMethods(['mergeConfigToFeatureSettings', 'makeRequest', 'getQueryUrl', 'getIntegrationSettings', 'getFieldsForQuery', 'getApiUrl'])
             ->getMock();
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('mergeConfigToFeatureSettings')
             ->willReturn(
                 [
@@ -228,15 +228,15 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
                 ]
             );
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('makeRequest')
             ->willReturnCallback(
                 function ($url, $parameters = [], $method = 'GET', $settings = []): void {
                     $this->assertEquals(
-                        $parameters,
                         [
                             'q' => 'select Id from Account where Name = \'Some\\\\thing E\\\'lse\' and BillingCountry =  \'Some\\\\Where E\\\'lse\' and BillingCity =  \'Some\\\\Where E\\\'lse\' and BillingState =  \'Some\\\\Where E\\\'lse\'',
-                        ]
+                        ],
+                        $parameters
                     );
                 }
             );
@@ -258,16 +258,16 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @testdox Test that a backslash and an html entity of single quote are escaped for SF queries
      *
-     * @covers \MauticPlugin\MauticCrmBundle\Api\SalesforceApi::escapeQueryValue()
+     * @covers \MauticPlugin\MauticCrmBundle\Api\SalesforceApi::escapeQueryValue
      */
     public function testCompanyQueryWithHtmlEntitiesIsEscapedCorrectly(): void
     {
         $integration = $this->getMockBuilder(SalesforceIntegration::class)
             ->disableOriginalConstructor()
-            ->setMethodsExcept(['cleanPushData'])
+            ->onlyMethods(['mergeConfigToFeatureSettings', 'makeRequest', 'getQueryUrl', 'getIntegrationSettings', 'getFieldsForQuery', 'getApiUrl'])
             ->getMock();
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('mergeConfigToFeatureSettings')
             ->willReturn(
                 [
@@ -277,15 +277,15 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
                 ]
             );
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('makeRequest')
             ->willReturnCallback(
                 function ($url, $parameters = [], $method = 'GET', $settings = []): void {
                     $this->assertEquals(
-                        $parameters,
                         [
                             'q' => 'select Id from Account where Name = \'Some\\\\thing\\\' E\\\'lse\' and BillingCountry =  \'Some\\\\Where\\\' E\\\'lse\' and BillingCity =  \'Some\\\\Where\\\' E\\\'lse\' and BillingState =  \'Some\\\\Where\\\' E\\\'lse\'',
-                        ]
+                        ],
+                        $parameters
                     );
                 }
             );
@@ -311,10 +311,10 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
     {
         $integration = $this->getMockBuilder(SalesforceIntegration::class)
             ->disableOriginalConstructor()
-            ->setMethodsExcept(['cleanPushData'])
+            ->onlyMethods(['mergeConfigToFeatureSettings', 'makeRequest', 'getQueryUrl', 'getIntegrationSettings', 'getFieldsForQuery', 'getApiUrl'])
             ->getMock();
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('mergeConfigToFeatureSettings')
             ->willReturn(
                 [
@@ -324,15 +324,15 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
                 ]
             );
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('makeRequest')
             ->willReturnCallback(
                 function ($url, $parameters = [], $method = 'GET', $settings = []): void {
                     $this->assertEquals(
-                        $parameters,
                         [
                             'q' => 'select Id from Contact where email = \'con\\\\tact\\\'email@email.com\'',
-                        ]
+                        ],
+                        $parameters
                     );
                 }
             );
@@ -353,10 +353,10 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
     {
         $integration = $this->getMockBuilder(SalesforceIntegration::class)
             ->disableOriginalConstructor()
-            ->setMethodsExcept(['cleanPushData'])
+            ->onlyMethods(['mergeConfigToFeatureSettings', 'makeRequest', 'getQueryUrl', 'getIntegrationSettings', 'getFieldsForQuery', 'getApiUrl'])
             ->getMock();
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('mergeConfigToFeatureSettings')
             ->willReturn(
                 [
@@ -366,15 +366,15 @@ class SalesforceApiTest extends \PHPUnit\Framework\TestCase
                 ]
             );
 
-        $integration->expects($this->exactly(1))
+        $integration->expects($this->once())
             ->method('makeRequest')
             ->willReturnCallback(
                 function ($url, $parameters = [], $method = 'GET', $settings = []): void {
                     $this->assertEquals(
-                        $parameters,
                         [
                             'q' => 'select Id from Lead where email = \'con\\\\tact\\\'email@email.com\' and ConvertedContactId = NULL',
-                        ]
+                        ],
+                        $parameters
                     );
                 }
             );

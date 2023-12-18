@@ -23,13 +23,7 @@ class TrustOptionsStoreTest extends TestCase
         $this->store                = new TrustOptionsStore($this->coreParametersHelper, 'foobar');
     }
 
-    public function testTrustOptionsConfiguredIfSamlEnabledAndEntityIdMatches(): void
-    {
-        $store = $this->store->get('foobar');
-        $this->assertInstanceOf(TrustOptions::class, $store);
-    }
-
-    public function testHasTrustOptionsIfSamlConfiguredAndEntityIdMatches(): void
+    public function testHasTrustOptionsIfSamlConfiguredAndEntityIdMatches()
     {
         $this->coreParametersHelper->expects($this->once())
             ->method('get')

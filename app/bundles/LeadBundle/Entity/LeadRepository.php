@@ -3,6 +3,7 @@
 namespace Mautic\LeadBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DriverException;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
@@ -13,6 +14,7 @@ use Mautic\CoreBundle\Helper\SearchStringHelper;
 use Mautic\LeadBundle\Controller\ListController;
 use Mautic\LeadBundle\Event\LeadBuildSearchEvent;
 use Mautic\LeadBundle\LeadEvents;
+use Mautic\LeadBundle\Segment\OperatorOptions;
 use Mautic\PointBundle\Model\TriggerModel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -192,7 +194,7 @@ class LeadRepository extends CommonRepository implements CustomFieldRepositoryIn
                 FROM Mautic\LeadBundle\Entity\Lead c
                 WHERE c.email IN (:emails)
             ")
-            ->setParameter('emails', $emails, Connection::PARAM_STR_ARRAY)
+            ->setParameter('emails', $emails, ArrayParameterType::STRING)
             ->getArrayResult();
 
         return array_map(
@@ -703,7 +705,7 @@ class LeadRepository extends CommonRepository implements CustomFieldRepositoryIn
         // This will be switched by some commands that use join tables as NOT EXISTS queries will be used
         $exprType = ($filter->not) ? 'negate_expr' : 'expr';
 
-        $operators = $this->getFilterExpressionFunctions();
+        $operators = OperatorOptions::getFilterExpressionFunctions();
         $operators = array_merge($operators, [
             'x' => [
                 'expr'        => 'andX',
@@ -733,14 +735,14 @@ class LeadRepository extends CommonRepository implements CustomFieldRepositoryIn
                 break;
             case $this->translator->trans('mautic.lead.lead.searchcommand.isunowned'):
             case $this->translator->trans('mautic.lead.lead.searchcommand.isunowned', [], null, 'en_US'):
-                $expr = $q->expr()->orX(
+                $expr = $q->expr()->or(
                     $q->expr()->$eqExpr('l.owner_id', 0),
                     $q->expr()->$nullExpr('l.owner_id')
                 );
                 break;
             case $this->translator->trans('mautic.lead.lead.searchcommand.owner'):
             case $this->translator->trans('mautic.lead.lead.searchcommand.owner', [], null, 'en_US'):
-                $expr = $q->expr()->orX(
+                $expr = $q->expr()->or(
                     $q->expr()->$likeExpr('u.first_name', ':'.$unique),
                     $q->expr()->$likeExpr('u.last_name', ':'.$unique)
                 );
@@ -748,7 +750,7 @@ class LeadRepository extends CommonRepository implements CustomFieldRepositoryIn
                 break;
             case $this->translator->trans('mautic.core.searchcommand.name'):
             case $this->translator->trans('mautic.core.searchcommand.name', [], null, 'en_US'):
-                $expr = $q->expr()->orX(
+                $expr = $q->expr()->or(
                     $q->expr()->$likeExpr('l.firstname', ":$unique"),
                     $q->expr()->$likeExpr('l.lastname', ":$unique")
                 );
@@ -849,7 +851,7 @@ class LeadRepository extends CommonRepository implements CustomFieldRepositoryIn
                 $sq->select('duplicate.lead_id')
                     ->from(MAUTIC_TABLE_PREFIX.'lead_lists_leads', 'duplicate')
                     ->where(
-                        $q->expr()->andX(
+                        $q->expr()->and(
                             $q->expr()->in('duplicate.leadlist_id', $imploder),
                             $q->expr()->eq('duplicate.manually_removed', 0)
                         )
@@ -1091,7 +1093,7 @@ class LeadRepository extends CommonRepository implements CustomFieldRepositoryIn
                     $q->expr()->eq('l.id', ':leadId')
                 )
             )
-            ->setParameter('stageIds', $stages, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
+            ->setParameter('stageIds', $stages, ArrayParameterType::INTEGER)
             ->setParameter('leadId', $lead->getId());
 
         return (bool) $q->executeQuery()->fetchOne();

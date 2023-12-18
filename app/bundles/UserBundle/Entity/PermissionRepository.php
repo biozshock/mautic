@@ -37,7 +37,7 @@ class PermissionRepository extends CommonRepository
             ->orderBy('p.bundle')
             ->setParameter('role', $role)
             ->getQuery()
-            ->useResultCache(false)
+            ->disableResultCache()
             ->getResult(Query::HYDRATE_ARRAY);
 
         // rearrange the array to meet needs

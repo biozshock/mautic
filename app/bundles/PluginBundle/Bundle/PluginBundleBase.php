@@ -2,6 +2,7 @@
 
 namespace Mautic\PluginBundle\Bundle;
 
+use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\ORM\Tools\SchemaTool;
 use Mautic\CoreBundle\Factory\MauticFactory;
@@ -83,7 +84,9 @@ abstract class PluginBundleBase extends Bundle
         $db         = $factory->getDatabase();
         $schemaTool = new SchemaTool($factory->getEntityManager());
         $toSchema   = $schemaTool->getSchemaFromMetadata($metadata);
-        $queries    = $installedSchema->getMigrateToSql($toSchema, $db->getDatabasePlatform());
+        $comparator = (new Comparator())->compareSchemas($installedSchema, $toSchema);
+        $databasePlatform = $db->getDatabasePlatform();
+        $queries = $databasePlatform->getAlterSchemaSQL($comparator);
 
         $db->beginTransaction();
         try {
