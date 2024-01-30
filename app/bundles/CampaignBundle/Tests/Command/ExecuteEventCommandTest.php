@@ -10,7 +10,6 @@ class ExecuteEventCommandTest extends AbstractCampaignCommand
     {
         putenv('CAMPAIGN_EXECUTIONER_SCHEDULER_ACKNOWLEDGE_SECONDS=1');
 
-
         $this->runCommand('mautic:campaigns:trigger', ['-i' => 1, '--contact-ids' => '1,2,3']);
 
         // There should be two events scheduled
