@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mautic\EmailBundle\Tests\Model;
 
 use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Mautic\CoreBundle\Entity\IpAddress;
@@ -12,7 +13,9 @@ use Mautic\CoreBundle\Test\MauticMysqlTestCase;
 use Mautic\CoreBundle\Tests\Functional\CreateTestEntitiesTrait;
 use Mautic\EmailBundle\Entity\Email;
 use Mautic\EmailBundle\Entity\Stat;
+use Mautic\EmailBundle\Helper\MailHelper;
 use Mautic\EmailBundle\Model\EmailModel;
+use Mautic\EmailBundle\Model\EmailStatModel;
 use Mautic\LeadBundle\Entity\DoNotContact;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Entity\LeadList;
@@ -25,7 +28,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class EmailModelFunctionalTest extends MauticMysqlTestCase
 {
-    use CreateTestEntitiesTrait;
+    use CreateTestEntitiesTrait {
+        createEmail as createEmailByName;
+    }
 
     private EmailModel|ContainerInterface $emailModel;
 
@@ -528,5 +533,35 @@ class EmailModelFunctionalTest extends MauticMysqlTestCase
 
         $this->assertArrayHasKey('companies', $result);
         $this->assertEmpty($result['companies']);
+    }
+
+    public function testPersistingStatWithDetachedEmailThrowsDoctrineError(): void
+    {
+        // Arrange: create a simple published list email using existing helpers
+        $em = static::getContainer()->get('doctrine.orm.entity_manager');
+        \assert($em instanceof EntityManagerInterface);
+
+        $email = $this->createEmailByName('Detached Email Test');
+        $email->setEmailType('list');
+        $email->setIsPublished(true);
+        $em->persist($email);
+        $em->flush();
+
+        $mailHelper = static::getContainer()->get(MailHelper::class);
+        \assert($mailHelper instanceof MailHelper);
+        $emailStatModel = static::getContainer()->get(EmailStatModel::class);
+        \assert($emailStatModel instanceof EmailStatModel);
+
+        // Use the real Email entity in the helper
+        $mailHelper->setEmail($email);
+
+        // Force the problematic condition: make Email detached
+        $em->detach($email);
+
+        $stat = $mailHelper->createEmailStat(false, 'recipient@example.test', null);
+        $emailStatModel->saveEntity($stat);
+
+        self::assertNotNull($stat->getId());
+        self::assertSame($email->getName(), $stat->getEmail()->getName());
     }
 }

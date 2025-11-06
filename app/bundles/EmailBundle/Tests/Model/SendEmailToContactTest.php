@@ -5,6 +5,7 @@ namespace Mautic\EmailBundle\Tests\Model;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Mautic\AssetBundle\Model\AssetModel;
+use Mautic\CoreBundle\Entity\FormEntity;
 use Mautic\CoreBundle\Factory\ModelFactory;
 use Mautic\CoreBundle\Helper\CoreParametersHelper;
 use Mautic\CoreBundle\Helper\PathsHelper;
@@ -392,6 +393,29 @@ class SendEmailToContactTest extends \PHPUnit\Framework\TestCase
         $themeHelper->expects(self::never())
             ->method('checkForTwigTemplate');
 
+        $invokedCount  = $this->exactly(count($this->contacts) * 2);
+        $entityManager = $this->createMock(EntityManager::class);
+        $entityManager->expects($invokedCount)
+            ->method('getReference')
+            ->willReturnCallback(function (string $entityClass, int $entityId) use ($emailMock, $invokedCount): FormEntity {
+                $invocationCount = $invokedCount->numberOfInvocations();
+                if (1 === $invocationCount % 2) {
+                    self::assertSame(1, $entityId);
+                    self::assertSame(Email::class, $entityClass);
+
+                    return $emailMock;
+                }
+
+                if (0 === $invocationCount % 2) {
+                    self::assertSame($this->contacts[($invocationCount / 2) - 1]['id'], $entityId);
+                    self::assertSame(Lead::class, $entityClass);
+
+                    return $this->createMock(Lead::class);
+                }
+
+                self::fail('Unknown $invocationCount '.$invocationCount);
+            });
+
         $mailHelper = $this->getMockBuilder(MailHelper::class)
             ->setConstructorArgs([
                 $mailer,
@@ -406,7 +430,7 @@ class SendEmailToContactTest extends \PHPUnit\Framework\TestCase
                 $this->createMock(PathsHelper::class),
                 $mockDispatcher,
                 new RequestStack(),
-                $this->createMock(EntityManager::class),
+                $entityManager,
                 $modelFactory,
                 $this->createMock(AssetModel::class),
                 $this->createMock(TrackableModel::class),
