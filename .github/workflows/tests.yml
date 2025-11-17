@@ -61,10 +61,10 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ./var/cache/phpunit
-        key: ${{ runner.os }}-phpunit-${{ hashFiles('**/composer.lock') }}-${{ github.run_id }}
+        key: ${{ runner.os }}1-phpunit-${{ hashFiles('**/composer.lock') }}-${{ github.run_id }}
         restore-keys: |
-          ${{ runner.os }}-phpunit-${{ hashFiles('**/composer.lock') }}
-          ${{ runner.os }}-phpunit-
+          ${{ runner.os }}1-phpunit-${{ hashFiles('**/composer.lock') }}
+          ${{ runner.os }}1-phpunit-
 
     - name: Setup PHP, with composer and extensions
       uses: shivammathur/setup-php@v2
