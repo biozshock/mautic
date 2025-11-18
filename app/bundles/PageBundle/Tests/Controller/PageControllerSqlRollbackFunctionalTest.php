@@ -56,7 +56,7 @@ class PageControllerSqlRollbackFunctionalTest extends MauticMysqlTestCase
         ];
         $encodedCt = base64_encode(serialize($ct));
 
-        $this->setUpSymfony();
+        $this->setUpSymfony($this->configParams);
         $this->client->followRedirects(false);
 
         $this->client->request(Request::METHOD_GET, "/r/{$redirectHash}?ct={$encodedCt}");

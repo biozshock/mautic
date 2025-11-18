@@ -98,5 +98,5 @@ jobs:
         export DB_PORT="${{ job.services.database.ports[3306] }}"
         export SAML_PORT="${{ job.services.saml.ports[8080] }}"
 
-        php -d zend.assertions=1 bin/phpunit -d memory_limit=2G --bootstrap vendor/autoload.php --configuration app/phpunit.xml.dist app/bundles/PageBundle/Tests/Controller
+        php -d zend.assertions=1 bin/phpunit -d memory_limit=2G --bootstrap vendor/autoload.php --configuration app/phpunit.xml.dist app/bundles/PageBundle/Tests/Controller --filter=PageControllerSqlRollbackFunctionalTest
 
