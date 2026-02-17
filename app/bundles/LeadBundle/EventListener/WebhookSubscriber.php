@@ -35,7 +35,7 @@ class WebhookSubscriber implements EventSubscriberInterface
             LeadEvents::COMPANY_POST_SAVE            => ['onCompanySave', 0],
             LeadEvents::COMPANY_POST_DELETE          => ['onCompanyDelete', 0],
             LeadEvents::LEAD_LIST_CHANGE             => ['onSegmentChange', 0],
-            LeadEvents::LEAD_LIST_BATCH_CHANGE       => ['onSegmentChange', 0],
+            LeadEvents::LEAD_LIST_BATCH_CHANGE       => ['onSegmentBatchChange', 0],
         ];
     }
 
@@ -263,6 +263,16 @@ class WebhookSubscriber implements EventSubscriberInterface
 
     public function onSegmentChange(ListChangeEvent $changeEvent): void
     {
+        $this->doSegmentChange($changeEvent, false);
+    }
+
+    public function onSegmentBatchChange(ListChangeEvent $changeEvent): void
+    {
+        $this->doSegmentChange($changeEvent, true);
+    }
+
+    private function doSegmentChange(ListChangeEvent $changeEvent, bool $batchProcess): void
+    {
         $contacts = $changeEvent->getLeads() ?? [$changeEvent->getLead()];
         foreach ($contacts as $contact) {
             if (is_array($contact)) {
@@ -276,6 +286,10 @@ class WebhookSubscriber implements EventSubscriberInterface
                     'action'   => $changeEvent->wasAdded() ? 'added' : 'removed',
                 ]
             );
+
+            if ($batchProcess) {
+                $this->leadModel->getRepository()->detachEntity($contact);
+            }
         }
     }
 }
